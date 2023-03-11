@@ -156,14 +156,64 @@ void airTripAddBest(struct airTrip* trip, char* name, float longitude, float lat
     distancia por tener que pasar por esta nueva parada. En los ejemplos a continuación, 
     se puede ver como en el primer caso el mejor lugar para agregar la parada es al final, cambiando 
     el último lugar a visitar. En el segundo caso, lo mejor es que la nueva parada termine entre las únicas 
-    dos paradas de la lista. En el u ́ltimo caso, lo mejor deber ́ıa ser cambiar el primero, pero esto 
+    dos paradas de la lista. En el último caso, lo mejor deber ́ıa ser cambiar el primero, pero esto 
     no se permite. Solo se permite buscar el mejor lugar a partir del primero. Por lo tanto, esta nueva 
     parada, se termina agregando en el segundo lugar.
+    Ejemplo: airTripAddBest(A1:[P1:(1.00,1.00)][P2:(2.00,2.00)], NN, 2.50, 2.50) 
+    Devuelve: A1:[P1:(1.00,1.00)][P2:(2.00,2.00)][NN:(2.50,2.50)]
+
 
     Desarrollo:
     El algoritmo que pensamos es el siguiente:
     1. Reservamos memoria para el nuevo aeropuerto.
+    2. Copiamos el nombre del aeropuerto en el nuevo aeropuerto.
+    3. Copiamos la longitud y latitud del aeropuerto en el nuevo aeropuerto.
+    4. Primero, comparamos la longitud total del viaje si agregamos el nuevo aeropuerto en
+    el final de la lista de aeropuertos con la longitud total del viaje si agregamos el 
+    nuevo aeropuerto en el mejor lugar posible:
+     - Si la longitud total del viaje es menor si agregamos el nuevo aeropuerto al final de la lista de aeropuertos, 
+    agregamos el nuevo aeropuerto al final de la lista de aeropuertos. 
+    - Si la longitud total del viaje es menor si agregamos el nuevo aeropuerto en el mejor lugar 
+    posible, agregamos el nuevo aeropuerto en el mejor lugar posible.
+    5. Para determinar cual es el mejor lugar posible, recorremos la lista de aeropuertos, 
+    comparando la longitud total del viaje si agregamos el nuevo aeropuerto en el lugar actual 
+    con la longitud total del viaje si agregamos el nuevo aeropuerto en el mejor lugar posible 
+    hasta el momento. Si la longitud total del viaje es menor si agregamos el nuevo aeropuerto 
+    en el lugar actual, agregamos el nuevo aeropuerto en el lugar actual.
+    6. Calculamos la longitud total del viaje.
+    7. Retornamos el puntero al nuevo aeropuerto.
+
+    // Intentamos que la función tenga el menor orden de complejidad posible
+    
+    Requiere: trip != NULL && name != NULL
+    Devuelve: el nuevo aeropuerto agregado.
     */
+    struct airport *actual = trip->first;
+    struct airport* nuevo = (struct airport*) malloc(sizeof(struct airport));
+    nuevo->name = strDup(name);
+    nuevo->longitude = longitude;
+    nuevo->latitude = latitude;
+    nuevo->next = NULL;
+
+    float longitudTotal = trip->totalLength; // longitud total del viaje
+    // ir hasta el ultimo aeropuerto en la lista
+   
+    while (actual->next != NULL){
+        actual = actual->next;
+    }
+    float longitudTotalFinal = longitudTotal + flyLength(actual, nuevo); // longitud total del viaje si agregamos el nuevo aeropuerto al final de la lista de aeropuertos
+    struct airport* mejorLugar = actual; // mejor lugar para agregar el nuevo aeropuerto
+    while (actual->next != NULL){   // recorremos la lista de aeropuertos
+        float longitudTotalActual = longitudTotal - flyLength(actual, actual->next) + flyLength(actual, nuevo) + flyLength(nuevo, actual->next);
+        // longitud total del viaje si agregamos el nuevo aeropuerto en el lugar actual
+        if (longitudTotalActual < longitudTotalFinal){ // si la longitud total del viaje es menor si agregamos el nuevo en el lugar actual, entonces agregamos el nuevo en el lugar actual
+            longitudTotalFinal = longitudTotalActual;
+            mejorLugar = actual;
+        }
+        actual = actual->next; // avanzamos al siguiente aeropuerto
+        
+    }
+
 
 }
 
