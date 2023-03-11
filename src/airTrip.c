@@ -1,7 +1,13 @@
 #include "airTrip.h"
 
 char* strDup(char* src) {
-
+    /*
+     Esta función hace una copia del string src en una nueva área de memoria 
+     y retorna el puntero a la nueva copia. Además, se asegura de reservar 
+     la memoria necesaria con malloc y de copiar todos los caracteres del 
+     string utilizando un bucle while. La última posición de la nueva cadena 
+     es asignada como el caracter nulo \0, para indicar el fin del string.
+    */
     if (src == NULL){
         return NULL;
     }
@@ -19,19 +25,71 @@ char* strDup(char* src) {
     return dest;
 }
 
-int strCmp(char* a, char* b) {
-
-    // COMPLETAR
-
-    return 0;
+int strCmp(char*a, char* b) {
+    /*
+     Esta función compara dos strings y retorna un valor negativo si s1 es 
+     menor que s2, 0 si son iguales y un valor positivo si s1 es mayor que s2.
+    */
+    int i = 0;
+    while (a[i] != '\0' && b[i] != '\0') {
+        if (a[i] < b[i]) {
+            return 1;
+        } else if (a[i] > b[i]) {
+            return -1;
+        }
+        i++;
+    }
+    if (a[i] == '\0' && b[i] == '\0') {
+        return 0;
+    } else if (a[i] == '\0') {
+        return 1;
+    } else {
+        return -1;
+    }
 }
 
-char* strCnt(char* src1, char* src2) {
 
-    // COMPLETAR
+char* strConcatenate(char* src1, char* src2) {
+    /*
+    Esta función concatena dos strings y retorna un puntero a la nueva cadena.
+    */
+    if (src1 == NULL || src2 == NULL) {
+        return NULL;
+    }
 
-    return 0;
+    int len1 = 0;
+    while (src1[len1] != '\0') {
+        len1++;
+    }
+
+    int len2 = 0;
+    while (src2[len2] != '\0') {
+        len2++;
+    }
+
+    char* dest = (char*) malloc(sizeof(char) * (len1 + len2 + 1));
+    if (dest == NULL) {
+        return NULL;
+    }
+
+    int i = 0;
+    while (src1[i] != '\0') {
+        dest[i] = src1[i];
+        i++;
+    }
+
+    int j = 0;
+    while (src2[j] != '\0') {
+        dest[i] = src2[j];
+        i++;
+        j++;
+    }
+
+    dest[i] = '\0';
+
+    return dest;
 }
+
 
 float flyLength(struct airport* a1, struct airport* a2) {
     float deltaLon = a1->longitude - a2->longitude;
