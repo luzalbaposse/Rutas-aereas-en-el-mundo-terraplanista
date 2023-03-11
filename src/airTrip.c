@@ -2,11 +2,13 @@
 
 char* strDup(char* src) {
     /*
-     Esta función hace una copia del string src en una nueva área de memoria 
-     y retorna el puntero a la nueva copia. Además, se asegura de reservar 
-     la memoria necesaria con malloc y de copiar todos los caracteres del 
-     string utilizando un bucle while. La última posición de la nueva cadena 
-     es asignada como el caracter nulo \0, para indicar el fin del string.
+    Para esta función, pensamos el siguiente algoritmo:
+    1. Calculamos el largo del string.
+    2. Reservamos memoria para la nueva cadena.
+    3. Copiamos el string en la nueva cadena.
+    4. Retornamos el puntero a la nueva cadena.
+    En resumen, la función recibe un string y retorna un nuevo string que es una copia 
+    del string que recibimos.
     */
     if (src == NULL){
         return NULL;
@@ -51,41 +53,48 @@ int strCmp(char*a, char* b) {
 
 char* strConcatenate(char* src1, char* src2) {
     /*
-    Esta función concatena dos strings y retorna un puntero a la nueva cadena.
+    El algoritmo que pensamos para esta función es el siguiente:
+    1. Calculamos el largo de cada string.
+    2. Reservamos memoria para la nueva cadena.
+    3. Copiamos el primer string en la nueva cadena.
+    4. Copiamos el segundo string en la nueva cadena.
+    5. Agregamos el caracter nulo al final de la cadena.
+    6. Retornamos el puntero a la nueva cadena.
+    En palabras simples, la función recibe dos strings y retorna un nuevo string que es la suma de estos dos.
     */
-    if (src1 == NULL || src2 == NULL) {
+    if (src1 == NULL || src2 == NULL) { // Si alguno de los strings es NULL, retorna NULL
         return NULL;
     }
 
     int len1 = 0;
-    while (src1[len1] != '\0') {
+    while (src1[len1] != '\0') { // Calcula el largo de src1
         len1++;
     }
 
     int len2 = 0;
-    while (src2[len2] != '\0') {
+    while (src2[len2] != '\0') { // Calcula el largo de src2
         len2++;
     }
 
-    char* dest = (char*) malloc(sizeof(char) * (len1 + len2 + 1));
-    if (dest == NULL) {
-        return NULL;
+    char* dest = (char*) malloc(sizeof(char) * (len1 + len2 + 1)); // Reserva memoria para la nueva cadena
+    if (dest == NULL) { // Si no se pudo reservar memoria, retorna NULL
+        return NULL; 
     }
 
-    int i = 0;
+    int i = 0; // Copia src1 en la nueva cadena
     while (src1[i] != '\0') {
         dest[i] = src1[i];
         i++;
     }
 
     int j = 0;
-    while (src2[j] != '\0') {
+    while (src2[j] != '\0') { // Copia src2 en la nueva cadena
         dest[i] = src2[j];
         i++;
         j++;
     }
 
-    dest[i] = '\0';
+    dest[i] = '\0'; // Agrega el caracter nulo al final de la cadena
 
     return dest;
 }
@@ -107,9 +116,18 @@ struct airTrip* airTripNew(char* plane) {
 
 void airTripAddLast(struct airTrip* trip, char* name, float longitude, float latitude) {
 
-    // COMPLETAR
+    struct airport* actual = trip->first;
+    while (actual->next != NULL){
+        actual = actual->next;
+    }
+    struct airport* nuevo = (struct airport*) malloc(sizeof(struct airport));
+    nuevo->name = strDup(name);
+    nuevo->longitude = longitude;
+    nuevo->latitude = latitude;
+    nuevo->next = NULL;
+    trip->totalLength += flyLength(actual, nuevo);
 
-}
+} 
 
 void airTripAddBest(struct airTrip* trip, char* name, float longitude, float latitude) {
 
