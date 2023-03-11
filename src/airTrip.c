@@ -2,9 +2,21 @@
 
 char* strDup(char* src) {
 
-    // COMPLETAR
+    if (src == NULL){
+        return NULL;
+    }
+    int len = 0;
+    while (src[len] != '\0'){
+        len++;
+    }
+    char* dest = (char*) malloc(sizeof(char) * (len + 1));
+    int i = 0;
+    while (src[i] != '\0'){
+        dest[i] = src[i];
+        i++;
+    }
 
-    return 0;
+    return dest;
 }
 
 int strCmp(char* a, char* b) {
