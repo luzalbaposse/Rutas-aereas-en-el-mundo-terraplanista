@@ -197,11 +197,11 @@ void airTripAddBest(struct airTrip* trip, char* name, float longitude, float lat
 
     float longitudTotal = trip->totalLength; // longitud total del viaje
     // ir hasta el ultimo aeropuerto en la lista
-   
-    while (actual->next != NULL){
-        actual = actual->next;
+    struct airport *current = trip->first;
+    while (current->next != NULL){
+        current = current->next;
     }
-    float longitudTotalFinal = longitudTotal + flyLength(actual, nuevo); // longitud total del viaje si agregamos el nuevo aeropuerto al final de la lista de aeropuertos
+    float longitudTotalFinal = longitudTotal + flyLength(current, nuevo); // longitud total del viaje si agregamos el nuevo aeropuerto al final de la lista de aeropuertos
     struct airport* mejorLugar = actual; // mejor lugar para agregar el nuevo aeropuerto
     while (actual->next != NULL){   // recorremos la lista de aeropuertos
         float longitudTotalActual = longitudTotal - flyLength(actual, actual->next) + flyLength(actual, nuevo) + flyLength(nuevo, actual->next);
