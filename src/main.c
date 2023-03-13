@@ -3,31 +3,64 @@
 #include "airTrip.h"
 
 int main() {
+    /*
+    Consigna: Hacer casos de test para las funciones de airTrip.c
+    */
+    // strDup - Casos
+    // String vacío
+    char* str1 = strDup("");
+    printf("strDup(\"\") -> \"%s\"\n", str1);
+    free(str1);
 
-    // COMPLETAR
+    // String con un caracter
+    char* str2 = strDup("a");
+    printf("strDup(\"a\") -> \"%s\"\n", str2);
+    free(str2);
 
-    // A Continuacion dejamos algunos ejemplos de como
-    // llama a las funciones pedidas. Este codigo debe
-    // ser borrado / modificado.
+    // String que incluya todos los caracteres válidos distintos de cero
+    char* str3 = strDup("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+-=[]{}|;':\",./<>?");
+    printf("strDup(\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+-=[]{}|;':\",./<>?\") -> \"%s\"\n", str3);
+    free(str3);
 
+    // strCmp - Casos
+    // Dos strings vacíos
+    int cmp1 = strCmp("","");
+    printf("strCmp(\"\",\"\") -> %d\n", cmp1);
+    
+    // Dos strings con un caracter
+    int cmp2 = strCmp("a","a");
+    printf("strCmp(\"a\",\"a\") -> %d\n", cmp2);
 
-    // strDuplicate
-    char* dup = strDup("hola");
-    printf("strDup(\"hola\") -> \"%s\"\n", dup);
-    free(dup);
-    printf("\n");
+    // Strings iguales hasta un carácter ((hacer cmpStr(s1,s2) y cmpStr(s2,s1))
+    int cmp3 = strCmp("abc","abcd");
+    printf("strCmp(\"abc\",\"abcd\") -> %d\n", cmp3);
+    int cmp4 = strCmp("abcd","abc");
+    printf("strCmp(\"abcd\",\"abc\") -> %d\n", cmp4);
 
-    // strCompare
-    printf("strCmp(\"abc\",\"abc\") -> %i\n", strCmp("abc","abc"));
-    printf("strCmp(\"abcd\",\"abc\") -> %i\n", strCmp("abcd","abc"));
-    printf("strCmp(\"abc\",\"abcd\") -> %i\n", strCmp("abc","abcd"));
-    printf("\n");
+    // Dos strings diferentes (hacer cmpStr(s1,s2) y cmpStr(s2,s1))
+    int cmp5 = strCmp("abc","abd");
+    printf("strCmp(\"abc\",\"abd\") -> %d\n", cmp5);
 
-    // strConcatenate
-    char* concat = strCnt("123","456");
-    printf("strConcatenate(\"123\",\"456\") -> \"%s\"\n", concat);
-    free(concat);
-    printf("\n");
+    // strConcatenate - Casos
+    // Un string vacio y un string de 3 caracteres
+    char* str4 = strConcatenate("","abc");
+    printf("strConcatenate(\"\",\"abc\") -> \"%s\"\n", str4);
+    free(str4);
+
+    // Un string de 3 caracteres y un string vacio
+    char* str5 = strConcatenate("abc","");
+    printf("strConcatenate(\"abc\",\"\") -> \"%s\"\n", str5);
+    free(str5);
+
+    //Dos strings de 1 caracter
+    char* str6 = strConcatenate("a","b");
+    printf("strConcatenate(\"a\",\"b\") -> \"%s\"\n", str6);
+    free(str6);
+
+    //Dos strings de 5 caracteres
+    char* str7 = strConcatenate("abcde","fghij");
+    printf("strConcatenate(\"abcde\",\"fghij\") -> \"%s\"\n", str7);
+    free(str7);
 
     // flyLength
     struct airport a1;
@@ -46,10 +79,48 @@ int main() {
     // airTripNew
     struct airTrip* trip = airTripNew("R1234");
 
-    // airTripAddLast
-    airTripAddLast(trip, "Ra1", 1.0, 1.0);
-    airTripAddLast(trip, "Ra2", 2.0, 2.0);
-    airTripAddLast(trip, "Ra3", 3.0, 3.0);
+    //airTripAddLast - Casos
+    // Agregar una parada a un recorrido vacío
+    airTripAddLast(trip, "P01", 1.0, 1.0);
+    airTripPrint(trip);
+    printf("\n");
+
+    // Agregar una parada a un recorrido de una sola parada
+    airTripAddLast(trip, "P02", 5.0, 5.0);
+    airTripPrint(trip);
+    printf("\n");
+
+    // Agregar una parada a un recorrido de más de una parada
+    airTripAddLast(trip, "P03", 3.0, 3.0);
+    airTripPrint(trip);
+    printf("\n");
+
+    // airTripAddBest - Casos
+    // Agregar una parada a un recorrido vacío
+    airTripAddBest(trip, "P01", 1.0, 1.0);
+    airTripPrint(trip);
+    printf("\n");
+
+    // Agregar una parada a un recorrido de una sola parada
+    airTripAddBest(trip, "P02", 6.0, 7.0);
+    airTripPrint(trip);
+    printf("\n");
+
+    // Agregar una parada a un recorrido de más de una parada tal que la parada quede en último lugar
+    airTripAddBest(trip, "P03", 3.0, 3.0);
+    airTripPrint(trip);
+    printf("\n");
+
+    // Agregar ua parada a un recorrido de más de una parada tal que la parada quede en segundo lugar
+    airTripAddBest(trip, "P02", 2.0, 2.0);
+    airTripPrint(trip);
+    printf("\n");
+
+    // Agregar una parada a un recorrido de más de una parada tal que la parada quede en tercer lugar
+    airTripAddBest(trip, "P03", 2.5, 2.9);
+    airTripPrint(trip);
+    printf("\n");
+
 
     // airTripPrint
     airTripPrint(trip);
@@ -62,8 +133,8 @@ int main() {
     airTripAddBest(trip, "P00", 0.5, 0.5);
     airTripPrint(trip);
     printf("\n");
-
-    // airTripJoin
+/*
+// airTripJoin
     struct airTrip* tripJoin;
     struct airTrip* trip1 = airTripNew("R1234");
     airTripAddLast(trip1, "Ra1", 1.0, 1.0);
@@ -104,6 +175,9 @@ int main() {
     // airTripDelete
     airTripDelete(trip);
     airTripDelete(tripJoin);
-    
+    */
     return 0;
 }
+
+
+    
