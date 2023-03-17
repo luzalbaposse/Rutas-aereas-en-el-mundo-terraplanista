@@ -121,6 +121,7 @@ int main() {
     airTripPrint(trip);
     printf("\n");
 
+// Falta desde acá
 
     // airTripPrint
     airTripPrint(trip);
