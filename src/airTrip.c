@@ -148,44 +148,51 @@ void airTripAddLast(struct airTrip* trip, char* name, float longitude, float lat
 
 } 
 
-void airTripAddBest(struct airTrip* trip, char* name, float longitude, float latitude) {
- // creamos el nuevo aeropuerto con la información pasada por parámetro
-    struct airport* nuevo = (struct airport*) malloc(sizeof(struct airport));
-    nuevo->name = strDup(name);
-    nuevo->longitude = longitude;
-    nuevo->latitude = latitude;
-    nuevo->next = NULL;
-    // Ahora, si la lista está vacía, lo que vamos a hacer es agregar el nuevo aeropuerto como el primero
-    if (trip->first == NULL) {
-        trip->first = nuevo;
-        return;
-    }
-    // Si la lista no está vacía, pero tiene solamente un elemento, lo que vamos a hacer es agregar el nuevo aeropuerto como el segundo
-    if (trip->first->next == NULL) {
-        trip->first->next = nuevo;
-        trip->totalLength += flyLength(trip->first, nuevo);
-        return;
-    }
-    // Si la lista ya tiene más de un elemento, vamos a calcular la longitud del vuelo si se agrega el nuevo aeropuerto entre el primer aeropuerto y el segundo aeropuerto
-    float length1 = flyLength(trip->first, nuevo) + flyLength(nuevo, trip->first->next);
-    // Ahora vamos a recorrer la lista de aeropuertos calculando la longitud del vuelo si se agrega entre cada par de aeropuertos consecutivos
-    struct airport* actual = trip->first;
-    while (actual->next->next != NULL) { // Mientras no lleguemos al último aeropuerto. Cuando ponemos actual->next->next se refiere al siguiente del siguiente
-        float length2 = flyLength(actual, nuevo) + flyLength(nuevo, actual->next->next);
-        // Si la longitud del vuelo es menor, entonces vamos a agregar el nuevo aeropuerto entre los dos aeropuertos
-        if (length2 < length1) {
-            nuevo->next = actual->next->next;
-            actual->next = nuevo;
-            trip->totalLength += flyLength(actual, nuevo);
-            return;
-        }
-        // Si la longitud del vuelo no es menor, entonces vamos a seguir recorriendo la lista
-        actual = actual->next;
-    }
-    // Si llegamos hasta acá, es porque el nuevo aeropuerto se debe agregar al final de la lista
-    actual->next->next = nuevo;
-    trip->totalLength += flyLength(actual->next, nuevo);
 
+void airTripAddBest(struct airTrip *trip, char *name, float longitude,
+                    float latitude) {
+  // creamos el nuevo aeropuerto con la información pasada por parámetro
+  struct airport *nuevo = (struct airport *)malloc(sizeof(struct airport));
+  nuevo->name = strDup(name);
+  nuevo->longitude = longitude;
+  nuevo->latitude = latitude;
+  nuevo->next = NULL;
+  // Ahora, si la lista está vacía, lo que vamos a hacer es agregar el nuevo
+  // aeropuerto como el primero
+  if (trip->first == NULL) {
+    trip->first = nuevo;
+    return;
+  }
+  // Si la lista no está vacía, pero tiene solamente un elemento, lo que vamos a
+  // hacer es agregar el nuevo aeropuerto como el segundo
+  if (trip->first->next == NULL) {
+    trip->first->next = nuevo;
+    trip->totalLength = flyLength(trip->first, nuevo);
+    return;
+  }
+  // Si la lista ya tiene más de un elemento, vamos a calcular la longitud del
+  // vuelo si se agrega el nuevo aeropuerto entre el primer aeropuerto y el
+  // segundo aeropuerto
+  float length1 =
+      flyLength(trip->first, nuevo) + flyLength(nuevo, trip->first->next);
+  // Ahora vamos a recorrer la lista de aeropuertos calculando la longitud del
+  // vuelo si se agrega entre cada par de aeropuertos consecutivos, sin eliminar
+  // ningun aeropuerto que ya esté en la lista
+  struct airport *actual = trip->first;
+  float length2 = 0.0;
+  struct airport *correcto = trip->first;
+  while (actual->next != NULL) {
+    length2 = flyLength(actual, nuevo) + flyLength(nuevo, actual->next);
+    if (length2 < length1) {
+      correcto = actual;
+    }
+    actual = actual->next;
+  }
+  // Si la longitud del vuelo es menor, entonces agregamos el nuevo aeropuerto
+  // entre el aeropuerto actual y el siguiente
+  nuevo->next = correcto->next;
+  correcto->next = nuevo;
+  trip->totalLength += flyLength(actual, nuevo);
 }
 
 void airTripJoin(struct airTrip** tripJoin, struct airTrip* trip1, struct airTrip* trip2){
