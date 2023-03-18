@@ -5,7 +5,6 @@
 int main() {
     /*
     Consigna: Hacer casos de test para las funciones de airTrip.c
-    */
     // strDup - Casos
     // String vacío
     char* str1 = strDup("");
@@ -61,7 +60,7 @@ int main() {
     char* str7 = strConcatenate("abcde","fghij");
     printf("strConcatenate(\"abcde\",\"fghij\") -> \"%s\"\n", str7);
     free(str7);
-
+ */
     // flyLength
     struct airport a1;
     struct airport a2;
@@ -83,16 +82,21 @@ int main() {
     // Agregar una parada a un recorrido vacío
     airTripAddLast(trip, "P01", 1.0, 1.0);
     airTripPrint(trip);
+    // printeo para ver que se agrego la parada P01 a un recorrido vacio
+    printf("Se agrego la parada P01 a un recorrido vacio\n");
     printf("\n");
 
     // Agregar una parada a un recorrido de una sola parada
     airTripAddLast(trip, "P02", 5.0, 5.0);
     airTripPrint(trip);
-    printf("\n");
+    // printeo para ver que se agrego la parada P02 a un recorrido de una sola parada
+    printf("Se agrego la parada P02 a un recorrido de una sola parada\n ");
 
     // Agregar una parada a un recorrido de más de una parada
     airTripAddLast(trip, "P03", 3.0, 3.0);
     airTripPrint(trip);
+    // printeo para ver que se agrego la parada P03 a un recorrido de mas de una parada
+    printf("Se agrego la parada P03 a un recorrido de mas de una parada\n");
     printf("\n");
 
     // airTripAddBest - Casos
