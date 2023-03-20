@@ -239,7 +239,7 @@ Consigna: Borra la última parada de un recorrido. Para esto debe liberar la mem
 
 void airTripRemoveDuplicates(struct airTrip* trip) {
 /*
-Consigna: Borra todas las paradas duplicadas dentro de un recorrido, dejando solo la primer aparición de cada una
+Borra todas las paradas duplicadas dentro de un recorrido, dejando solo la primer aparición de cada una.
 */
     struct airport* actual = trip->first; // struct airport* guarda el aeropuerto actual
     struct airport* anterior = NULL; // struct airport* guarda el aeropuerto anterior al aeropuerto actual
@@ -251,18 +251,17 @@ Consigna: Borra todas las paradas duplicadas dentro de un recorrido, dejando sol
                 anterior->next = siguiente->next; // El aeropuerto siguiente al anterior pasa a ser el aeropuerto siguiente al siguiente
                 free(siguiente->name); // Se libera el nombre del aeropuerto siguiente
                 free(siguiente); // Se libera el aeropuerto siguiente
-                siguiente = anterior->next; // El aeropuerto siguiente pasa a ser el aeropuerto siguiente al anterior
-            } else { // Si el nombre del aeropuerto actual no es igual al nombre del aeropuerto siguiente al actual
-                anterior = siguiente; // El aeropuerto anterior pasa a ser el aeropuerto siguiente
-                siguiente = siguiente->next; // El aeropuerto siguiente pasa a ser el aeropuerto siguiente al siguiente
+                siguiente = anterior->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al anterior
+            }
+            else{ // Si el nombre del aeropuerto actual no es igual al nombre del aeropuerto siguiente al actual
+                anterior = siguiente; // El aeropuerto anterior al actual pasa a ser el aeropuerto siguiente al actual
+                siguiente = siguiente->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al siguiente
             }
         }
-        anterior = actual; // El aeropuerto anterior pasa a ser el aeropuerto actual
         actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
+        anterior = NULL; // El aeropuerto anterior al actual pasa a ser NULL
     }
-    return; // Retorna
-
-
+    return;
 }
 
 char* airTripGetTrip(struct airTrip* trip) {
