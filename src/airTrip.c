@@ -136,14 +136,14 @@ void airTripAddLast(struct airTrip* trip, char* name, float longitude, float lat
     */
 
     struct airport* actual = trip->first;
-    while (actual->next != NULL){
-        actual = actual->next;
-    }
     struct airport* nuevo = (struct airport*) malloc(sizeof(struct airport));
     nuevo->name = strDup(name);
     nuevo->longitude = longitude;
     nuevo->latitude = latitude;
     nuevo->next = NULL;
+    while (actual->next != NULL){
+        actual = actual->next;
+    }
     trip->totalLength += flyLength(actual, nuevo);
 
 } 
