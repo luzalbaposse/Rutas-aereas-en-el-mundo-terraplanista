@@ -189,6 +189,10 @@ void airTripAddBest(struct airTrip *trip, char *name, float longitude,
     if (length2 < length1) {
       correcto = actual;
     }
+    if (strCmp(nuevo->name, actual->name) == 0){
+      correcto = actual;
+      break;
+    }
     actual = actual->next;
   }
   
