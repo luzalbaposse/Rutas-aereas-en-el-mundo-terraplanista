@@ -2,24 +2,18 @@
 
 char* strDup(char* src) {
     /*
-    Para esta función, pensamos el siguiente algoritmo:
-    1. Calculamos el largo del string.
-    2. Reservamos memoria para la nueva cadena.
-    3. Copiamos el string en la nueva cadena.
-    4. Retornamos el puntero a la nueva cadena.
-    En resumen, la función recibe un string y retorna un nuevo string que es una copia 
-    del string que recibimos.
+    Esta función recibe un string y retorna un nuevo string que es una copia del string recibido.
     */
-    if (src == NULL){
+    if (src == NULL){ // Si está vacío, no retornamos nada
         return NULL;
     }
     int len = 0;
-    while (src[len] != '\0'){
+    while (src[len] != '\0'){ // Vamos a calcular el largo del string para después reservar memoria
         len++;
     }
-    char* dest = (char*) malloc(sizeof(char) * (len + 1));
+    char* dest = (char*) malloc(sizeof(char) * (len + 1)); // Reservamos memoria para el nuevo string
     int i = 0;
-    while (src[i] != '\0'){
+    while (src[i] != '\0'){ // Acá vamos a copiar el string a medida que recorremos la cadena
         dest[i] = src[i];
         i++;
     }
@@ -33,19 +27,19 @@ int strCmp(char*a, char* b) {
      menor que s2, 0 si son iguales y un valor positivo si s1 es mayor que s2.
     */
     int i = 0;
-    while (a[i] != '\0' && b[i] != '\0') {
-        if (a[i] < b[i]) {
+    while (a[i] != '\0' && b[i] != '\0') { // Recorre los strings hasta que uno de los dos llegue al final
+        if (a[i] < b[i]) { // Si el caracter del primero es menor que el segundo, retorna 1
             return 1;
-        } else if (a[i] > b[i]) {
+        } else if (a[i] > b[i]) { // Si el caracter del primero es mayor que el segundo, retorna -1
             return -1;
         }
         i++;
     }
-    if (a[i] == '\0' && b[i] == '\0') {
+    if (a[i] == '\0' && b[i] == '\0') { // Si ambos strings llegaron al final, retorna 0
         return 0;
-    } else if (a[i] == '\0') {
+    } else if (a[i] == '\0') { // Si el primer string llegó al final, retorna 1
         return 1;
-    } else {
+    } else { // Si el segundo string llegó al final, retorna -1 
         return -1;
     }
 }
@@ -53,14 +47,7 @@ int strCmp(char*a, char* b) {
 
 char* strConcatenate(char* src1, char* src2) {
     /*
-    El algoritmo que pensamos para esta función es el siguiente:
-    1. Calculamos el largo de cada string.
-    2. Reservamos memoria para la nueva cadena.
-    3. Copiamos el primer string en la nueva cadena.
-    4. Copiamos el segundo string en la nueva cadena.
-    5. Agregamos el caracter nulo al final de la cadena.
-    6. Retornamos el puntero a la nueva cadena.
-    En palabras simples, la función recibe dos strings y retorna un nuevo string que es la suma de estos dos.
+    Esta función recibe dos strings y retorna un nuevo string que es la concatenación de los dos strings recibidos.
     */
     if (src1 == NULL || src2 == NULL) { // Si alguno de los strings es NULL, retorna NULL
         return NULL;
@@ -116,100 +103,82 @@ struct airTrip* airTripNew(char* plane) {
 
 void airTripAddLast(struct airTrip* trip, char* name, float longitude, float latitude) {
     /*
-    Consigna: Agrega un nuevo airport al final de la lista de paradas de un trip. 
-    Para esto debe recorrer toda la lista hasta encontrar el último lugar donde agregar 
-    el nuevo nodo. La nueva estructura de airport debe ser completada con los campos 
-    pasados por parámetro.
-
-    Desarrollo:
-
-    El algoritmo que pensamos para esta función es el siguiente:
-    1. Reservamos memoria para el nuevo aeropuerto.
-    2. Copiamos el nombre del aeropuerto en el nuevo aeropuerto.
-    3. Copiamos la longitud y latitud del aeropuerto en el nuevo aeropuerto.
-    4. Agregamos el nuevo aeropuerto al final de la lista de aeropuertos.
-    5. Calculamos la longitud total del viaje.
-    6. Retornamos el puntero al nuevo aeropuerto.
-
-    Requiere: trip != NULL && name != NULL
-    Devuelve: el nuevo aeropuerto agregado.
+    Esta función recibe un struct airTrip, un string con el nombre del aeropuerto, la longitud y la latitud del aeropuerto. Devuelve un struct airTrip con el nuevo aeropuerto agregado al final de la lista.
     */
-
-    struct airport* actual = trip->first;
-    struct airport* nuevo = (struct airport*) malloc(sizeof(struct airport));
+    
+    struct airport* actual = trip->first; // Con este nos vamos a mover por la lista
+    struct airport* nuevo = (struct airport*) malloc(sizeof(struct airport)); // Creamos el nuevo aeropuerto con la información pasada por parámetro
     nuevo->name = strDup(name);
     nuevo->longitude = longitude;
     nuevo->latitude = latitude;
     nuevo->next = NULL;
-    while (actual->next != NULL){
-        actual = actual->next;
-    }
-    trip->totalLength += flyLength(actual, nuevo);
+    while (actual->next != NULL){ // Recorremos la lista hasta llegar al último aeropuerto
+        actual = actual->next; // Vamos avanzando al siguiente aeropuerto
+    } 
+    trip->totalLength += flyLength(actual, nuevo); // Actualizamos la longitud total del vuelo
 
 } 
 
 
-void airTripAddBest(struct airTrip *trip, char *name, float longitude,
-                    float latitude) {
-     // creamos el nuevo aeropuerto con la información pasada por parámetro
-  struct airport *nuevo = (struct airport *)malloc(sizeof(struct airport));
-  nuevo->name = strDup(name);
-  nuevo->longitude = longitude;
-  nuevo->latitude = latitude;
-  nuevo->next = NULL;
-  // Ahora, si la lista está vacía, lo que vamos a hacer es agregar el nuevo
-  // aeropuerto como el primero
+void airTripAddBest(struct airTrip *trip, char *name, float longitude, float latitude) {
+    /*
+    Esta función recibe un struct airTrip, un string con el nombre del aeropuerto, la longitud y la latitud del aeropuerto. Devuelve un struct airTrip con el nuevo aeropuerto agregado en la posición que minimiza la longitud total del vuelo.
+    */
+    // creamos el nuevo aeropuerto con la información pasada por parámetro
+    struct airport *nuevo = (struct airport *)malloc(sizeof(struct airport));
+    nuevo->name = strDup(name);
+    nuevo->longitude = longitude;
+    nuevo->latitude = latitude;
+    nuevo->next = NULL;
+    //Ahora, si la lista está vacía, lo que vamos a hacer es agregar el nuevo aeropuerto como el primero
   if (trip->first == NULL) {
     trip->first = nuevo;
     return;
   }
-  // Si la lista no está vacía, pero tiene solamente un elemento, lo que vamos a
-  // hacer es agregar el nuevo aeropuerto como el segundo
+
+  // Si la lista no está vacía, pero tiene solamente un elemento, lo que vamos a hacer es agregar el nuevo aeropuerto como el segundo
+  
   if (trip->first->next == NULL) {
     trip->first->next = nuevo;
     trip->totalLength = flyLength(trip->first, nuevo);
     return;
   }
    
-  // Si la lista ya tiene más de un elemento, vamos a calcular la longitud del
-  // vuelo si se agrega el nuevo aeropuerto entre el primer aeropuerto y el
-  // segundo aeropuerto
+  // Si la lista ya tiene más de un elemento, vamos a calcular la longitud del vuelo si se agrega el nuevo aeropuerto entre el primer aeropuerto y el segundo aeropuerto
+  
   float length1 = flyLength(trip->first, nuevo) + flyLength(nuevo, trip->first->next);
-  // Ahora vamos a recorrer la lista de aeropuertos calculando la longitud del
-  // vuelo si se agrega entre cada par de aeropuertos consecutivos, sin eliminar
-  // ningun aeropuerto que ya esté en la lista
+  
+  // Ahora vamos a recorrer la lista de aeropuertos calculando la longitud del vuelo si se agrega entre cada par de aeropuertos consecutivos, sin eliminar ningun aeropuerto que ya esté en la lista
   struct airport *actual = trip->first;
   float length2 = 0.0;
   struct airport *correcto = trip->first;
   correcto = actual;
-  while (actual->next != NULL) {
+  while (actual->next != NULL) { // Recorremos la lista hasta llegar al último aeropuerto
 
-    length2 = flyLength(actual, nuevo) + flyLength(nuevo, actual->next);
+    length2 = flyLength(actual, nuevo) + flyLength(nuevo, actual->next); // Calculamos la longitud del vuelo si se agrega el nuevo aeropuerto entre el aeropuerto actual y el siguiente
 
-    if (length2 < length1) {
+    if (length2 < length1) { // Si la longitud del vuelo es menor, entonces agregamos el nuevo aeropuerto entre el aeropuerto actual y el siguiente
       correcto = actual;
     }
-    if (strCmp(nuevo->name, actual->name) == 0){
+    if (strCmp(nuevo->name, actual->name) == 0){ // Si el nombre del aeropuerto es igual al nombre del aeropuerto actual, entonces agregamos el nuevo aeropuerto entre el aeropuerto actual y el siguiente
       correcto = actual;
       break;
     }
-    actual = actual->next;
+    actual = actual->next; // Vamos avanzando al siguiente aeropuerto
   }
   
-  if (trip->totalLength + flyLength(actual, nuevo) < trip->totalLength + length2 - flyLength(correcto, correcto->next)){
+  if (trip->totalLength + flyLength(actual, nuevo) < trip->totalLength + length2 - flyLength(correcto, correcto->next)){ // Si la longitud del vuelo es menor, entonces agregamos el nuevo aeropuerto entre el aeropuerto actual y el siguiente
     correcto = actual;
   }
-  if (trip->totalLength + flyLength(trip->first, nuevo) + flyLength(nuevo, trip->first->next) - flyLength(trip->first, trip->first->next) < trip->totalLength + flyLength(actual, nuevo)){
+  if (trip->totalLength + flyLength(trip->first, nuevo) + flyLength(nuevo, trip->first->next) - flyLength(trip->first, trip->first->next) < trip->totalLength + flyLength(actual, nuevo)){ // Si la longitud del vuelo es menor, entonces agregamos el nuevo aeropuerto entre el aeropuerto actual y el siguiente
     correcto = trip->first;
   }
   
-  
-  // Si la longitud del vuelo es menor, entonces agregamos el nuevo aeropuerto
-  // entre el aeropuerto actual y el siguiente
+  // Si la longitud del vuelo es menor, entonces agregamos el nuevo aeropuerto entre el aeropuerto actual y el siguiente
   if (correcto->next == NULL){
     correcto->next = nuevo;
     trip->totalLength += flyLength(correcto, nuevo);
-  }else{
+  }else{ // Si la longitud del vuelo es mayor, entonces agregamos el nuevo aeropuerto entre el aeropuerto actual y el siguiente
     nuevo->next = correcto->next;
     correcto->next = nuevo;
     trip->totalLength = trip->totalLength + flyLength(correcto, nuevo) + flyLength(nuevo, nuevo->next) - flyLength(correcto, nuevo->next);
@@ -217,51 +186,56 @@ void airTripAddBest(struct airTrip *trip, char *name, float longitude,
 }
 
 void airTripJoin(struct airTrip** tripJoin, struct airTrip* trip1, struct airTrip* trip2){
-
     /*
-    Consigna: Une dos recorridos borrando los recorridos pasados por parámetro y retornando un nuevo recorrido en el doble puntero. Los recorridos serán unidos directamente colocando todas las paradas del trip1 y luego todas las paradas del trip2. Si el nombre del avión en ambos recorridos es el mismo, entonces se dejará solo este nombre. Si los nombres son diferentes, se deberá construir una nueva string que concatene el nombre del primero con el nombre del segundo separados por un guión. Por ejemplo, si el avión era un "Boeing737" para un recorrido y "Boeing747" para el otro, el nombre resultante será "Boeing737-Boeing747"
+        Esta función recibe dos struct airTrip y devuelve un struct airTrip con los dos recorridos unidos.
     */
-   struct airTrip* nuevo = (struct airTrip*) malloc(sizeof(struct airTrip)); // struct airTrip* guarda el nuevo recorrido
-    nuevo->plane = strDup(trip1->plane); // Aca se copia el nombre del avion del primer recorrido en el nuevo recorrido
-    nuevo->totalLength = trip1->totalLength + trip2->totalLength; // Aca se calcula la longitud total del nuevo recorrido
-    nuevo->first = trip1->first; // Aca se copia el primer aeropuerto del primer recorrido en el nuevo recorrido
-    struct airport* actual = trip1->first; // struct airport* guarda el aeropuerto actual
-    while (actual->next != NULL){ // Mientras el aeropuerto actual no sea el ultimo de la lista
-        actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
+    // Creamos el nuevo struct airTrip
+    struct airTrip* nuevo = (struct airTrip*) malloc(sizeof(struct airTrip)); 
+    nuevo->plane = strDup(trip1->plane); 
+    nuevo->totalLength = trip1->totalLength + trip2->totalLength; 
+    nuevo->first = trip1->first; 
+    // Recorremos la lista de aeropuertos del primer recorrido hasta llegar al último
+    struct airport* actual = trip1->first;
+    while (actual->next != NULL){ 
+        actual = actual->next; 
     }
-    actual->next = trip2->first; // El aeropuerto siguiente al actual pasa a ser el primer aeropuerto del segundo recorrido
-    if (strcmp(trip1->plane, trip2->plane) != 0){ // Si el nombre del avion del primer recorrido es distinto al nombre del avion del segundo recorrido
-        nuevo->plane = strDup(trip1->plane); // Aca se copia el nombre del avion del primer recorrido en el nuevo recorrido
-        nuevo->plane = strCat(nuevo->plane, "-"); // Aca se agrega un guion al nombre del avion del nuevo recorrido
-        nuevo->plane = strCat(nuevo->plane, trip2->plane); // Aca se agrega el nombre del avion del segundo recorrido al nombre del avion del nuevo recorrido
+    // Agregamos el primer aeropuerto del segundo recorrido al final del primer recorrido
+    actual->next = trip2->first; 
+    if (strcmp(trip1->plane, trip2->plane) != 0){ 
+        nuevo->plane = strDup(trip1->plane); 
+        nuevo->plane = strCat(nuevo->plane, "-"); 
+        nuevo->plane = strCat(nuevo->plane, trip2->plane); 
     }
-    free(trip1); // Se libera el primer recorrido
-    free(trip2); // Se libera el segundo recorrido
-    *tripJoin = nuevo; // El doble puntero tripJoin pasa a ser el nuevo recorrido
-    return nuevo; // Retorna el nuevo recorrido
+    // Liberamos la memoria de los dos recorridos que se unieron
+    free(trip1);
+    free(trip2); 
+    *tripJoin = nuevo; 
+    return nuevo; 
 
 }
 
 void airTripDelLast(struct airTrip* trip) {
 /*
-Consigna: Borra la última parada de un recorrido. Para esto debe liberar la memoria, tanto del nodo como del string del nombre
+Esta función recibe un struct airTrip y elimina el último aeropuerto de la lista de aeropuertos del recorrido.
 */
-    struct airport* actual = trip->first; // struct airport* guarda el aeropuerto actual
-    struct airport* anterior = NULL; // struct airport* guarda el aeropuerto anterior al aeropuerto actual
-    while (actual->next != NULL){ // Mientras el aeropuerto actual no sea el ultimo de la lista
-        anterior = actual; // El aeropuerto anterior al actual pasa a ser el aeropuerto actual
-        actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
+    struct airport* actual = trip->first; 
+    // Recorremos la lista de aeropuertos hasta llegar al último
+    struct airport* anterior = NULL; 
+    while (actual->next != NULL){ // Mientras el aeropuerto siguiente al actual no sea NULL
+        anterior = actual;          // El aeropuerto anterior al actual pasa a ser el aeropuerto actual
+        actual = actual->next;      // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
     }
-    free(actual->name); // Se libera el nombre del aeropuerto actual
-    free(actual); // Se libera el aeropuerto actual
-    anterior->next = NULL; // El aeropuerto siguiente al anterior pasa a ser NULL
-    return; // Retorna
+    // Liberamos la memoria del último aeropuerto
+    free(actual->name); 
+    free(actual); 
+    anterior->next = NULL; 
+    return; 
 
 }
 
 void airTripRemoveDuplicates(struct airTrip* trip) {
 /*
-Borra todas las paradas duplicadas dentro de un recorrido, dejando solo la primer aparición de cada una.
+Esta función borra todas las paradas duplicadas dentro de un recorrido, dejando solo la primer aparición de cada una.
 */
     struct airport* actual = trip->first; // struct airport* guarda el aeropuerto actual
     struct airport* anterior = NULL; // struct airport* guarda el aeropuerto anterior al aeropuerto actual
