@@ -232,33 +232,28 @@ Esta función recibe un struct airTrip y elimina el último aeropuerto de la lis
     return; 
 
 }
-
 void airTripRemoveDuplicates(struct airTrip* trip) {
-/*
-Esta función borra todas las paradas duplicadas dentro de un recorrido, dejando solo la primer aparición de cada una.
-*/
+    /*
+    Esta función borra todas las paradas duplicadas dentro de un recorrido, dejando solo la primer aparición de cada una.
+    */
     struct airport* actual = trip->first; // struct airport* guarda el aeropuerto actual
-    struct airport* anterior = NULL; // struct airport* guarda el aeropuerto anterior al aeropuerto actual
-    struct airport* siguiente = NULL; // struct airport* guarda el aeropuerto siguiente al aeropuerto actual
-    while (actual != NULL){ // Mientras el aeropuerto actual no sea NULL
-        siguiente = actual->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al actual
-        while (siguiente != NULL){ // Mientras el aeropuerto siguiente al actual no sea NULL
-            if (strcmp(actual->name, siguiente->name) == 0){ // Si el nombre del aeropuerto actual es igual al nombre del aeropuerto siguiente al actual
-                anterior->next = siguiente->next; // El aeropuerto siguiente al anterior pasa a ser el aeropuerto siguiente al siguiente
-                free(siguiente->name); // Se libera el nombre del aeropuerto siguiente
-                free(siguiente); // Se libera el aeropuerto siguiente
-                siguiente = anterior->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al anterior
-            }
-            else{ // Si el nombre del aeropuerto actual no es igual al nombre del aeropuerto siguiente al actual
-                anterior = siguiente; // El aeropuerto anterior al actual pasa a ser el aeropuerto siguiente al actual
-                siguiente = siguiente->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al siguiente
-            }
+    struct airport* siguiente = actual->next; // struct airport* guarda el aeropuerto siguiente al aeropuerto actual
+    while (siguiente != NULL){ // Mientras el aeropuerto siguiente al actual no sea NULL
+        if (strcmp(actual->name, siguiente->name) == 0){ // Si el nombre del aeropuerto actual es igual al nombre del aeropuerto siguiente al actual
+            actual->next = siguiente->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al siguiente
+            free(siguiente->name); // Se libera el nombre del aeropuerto siguiente
+            free(siguiente); // Se libera el aeropuerto siguiente
+            siguiente = actual->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al siguiente
         }
-        actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
-        anterior = NULL; // El aeropuerto anterior al actual pasa a ser NULL
+        else{ // Si el nombre del aeropuerto actual no es igual al nombre del aeropuerto siguiente al actual
+            actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
+            siguiente = actual->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al siguiente
+        }
     }
     return;
 }
+
+
 
 char* airTripGetTrip(struct airTrip* trip) {
 /* 
