@@ -17,8 +17,8 @@ int main() {
     free(str2);
 
     // String que incluya todos los caracteres válidos distintos de cero
-    char* str3 = strDup("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+-=[]{}|;':\",./<>?");
-    printf("strDup(\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+-=[]{}|;':\",./<>?\") -> \"%s\"\n", str3);
+    char* str3 = strDup("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$%^&*()_+-=[]{}|;':\",./<>?");
+    printf("strDup(\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$%^&*()_+-=[]{}|;':\",./<>?\") -> \"%s\"\n", str3);
     free(str3);
 
     // strCmp - Casos
