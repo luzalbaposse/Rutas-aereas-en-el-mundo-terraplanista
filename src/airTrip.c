@@ -236,21 +236,29 @@ void airTripRemoveDuplicates(struct airTrip* trip) {
     /*
     Esta función borra todas las paradas duplicadas dentro de un recorrido, dejando solo la primer aparición de cada una.
     */
-    struct airport* actual = trip->first; // struct airport* guarda el aeropuerto actual
-    struct airport* siguiente = actual->next; // struct airport* guarda el aeropuerto siguiente al aeropuerto actual
-    while (siguiente != NULL){ // Mientras el aeropuerto siguiente al actual no sea NULL
-        if (strcmp(actual->name, siguiente->name) == 0){ // Si el nombre del aeropuerto actual es igual al nombre del aeropuerto siguiente al actual
-            actual->next = siguiente->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al siguiente
-            free(siguiente->name); // Se libera el nombre del aeropuerto siguiente
-            free(siguiente); // Se libera el aeropuerto siguiente
-            siguiente = actual->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al siguiente
+   
+  struct airport* actual = trip->first; // struct airport* guarda el aeropuerto actual
+  struct airport* eliminar; // struct airport* guarda el aeropuerto anterior al aeropuerto actual
+  struct airport* siguiente; // struct airport* guarda el aeropuerto siguiente al aeropuerto actual
+  while (actual != NULL){ // Mientras el aeropuerto actual no sea NULL
+    siguiente = actual->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al actual
+    while(siguiente != NULL){  
+      if (strCmp(actual->name, siguiente->name) == 0){ // Si el nombre del aeropuerto actual es igual al nombre del aeropuerto siguiente al actual
+        eliminar = siguiente; // El aeropuerto siguiente al anterior pasa a ser el aeropuerto siguiente al siguiente
+        if (siguiente->next == NULL){
+          trip->totalLength -= flyLength(actual, eliminar);
+          actual->next = NULL;
+        }else{
+          trip->totalLength = trip->totalLength - flyLength(actual, eliminar) - flyLength(eliminar, siguiente->next) + flyLength(actual, siguiente->next);
+          actual->next = siguiente->next; // El aeropuerto siguiente pasa a ser el aeropuerto siguiente al anterior
         }
-        else{ // Si el nombre del aeropuerto actual no es igual al nombre del aeropuerto siguiente al actual
-            actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
-            siguiente = actual->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al siguiente
-        }
-    }
-    return;
+        free(eliminar);
+      }  
+
+      siguiente = siguiente->next;
+    }  
+    actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
+  }
 }
 
 
