@@ -240,16 +240,15 @@ void airTripRemoveDuplicates(struct airTrip* trip) {
   struct airport* actual = trip->first; // struct airport* guarda el aeropuerto actual
   struct airport* eliminar; // struct airport* guarda el aeropuerto anterior al aeropuerto actual
   struct airport* siguiente; // struct airport* guarda el aeropuerto siguiente al aeropuerto actual
-  while (actual != NULL){ // Mientras el aeropuerto actual no sea NULL
+  trip->totalLength = 0;
+  while (actual->next != NULL){ // Mientras el aeropuerto actual no sea NULL
     siguiente = actual->next; // El aeropuerto siguiente al actual pasa a ser el aeropuerto siguiente al actual
     while(siguiente != NULL){  
       if (strCmp(actual->name, siguiente->name) == 0){ // Si el nombre del aeropuerto actual es igual al nombre del aeropuerto siguiente al actual
         eliminar = siguiente; // El aeropuerto siguiente al anterior pasa a ser el aeropuerto siguiente al siguiente
         if (siguiente->next == NULL){
-          trip->totalLength -= flyLength(actual, eliminar);
           actual->next = NULL;
         }else{
-          trip->totalLength = trip->totalLength - flyLength(actual, eliminar) - flyLength(eliminar, siguiente->next) + flyLength(actual, siguiente->next);
           actual->next = siguiente->next; // El aeropuerto siguiente pasa a ser el aeropuerto siguiente al anterior
         }
         free(eliminar);
@@ -257,9 +256,11 @@ void airTripRemoveDuplicates(struct airTrip* trip) {
 
       siguiente = siguiente->next;
     }  
+    trip->totalLength = flyLength(actual, actual->next);// Se van sumando los aeropuertos de uno en uno, luego de eliminar los duplicados
     actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
   }
 }
+
 
 
 
