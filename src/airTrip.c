@@ -268,17 +268,19 @@ char* airTripGetTrip(struct airTrip* trip) {
 /* 
 Consigna: Retorna una string con los nombres de todas las paradas del recorrido separadas por un guión. Si le paso un recorrido con paradas A B C D E, retorna "A-B-C-D-E"
 */
-    char* string = (char*) malloc(sizeof(char)); // char* guarda la string
-    string[0] = '\0'; // La string pasa a ser NULL
-    struct airport* actual = trip->first; // struct airport* guarda el aeropuerto actual
-    while (actual != NULL){ // Mientras el aeropuerto actual no sea NULL
-        string = strCat(string, actual->name); // A la string se le agrega el nombre del aeropuerto actual
-        if (actual->next != NULL){ // Si el aeropuerto siguiente al actual no es NULL
-            string = strCat(string, "-"); // A la string se le agrega un guion
-        }
-        actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
-    }
-    return string; // Retorna la string
+  char* viaje = (char*)malloc(sizeof(char)); // Creamos el string
+
+  if (trip == NULL){// Caso vacio
+    return viaje;
+  }
+  struct airport* actual = trip->first;
+  viaje = strCnt(viaje, actual->name);
+  while (actual->next != NULL){ // Recorre los aeropuertos concatenandolos al string
+    viaje = strCnt(viaje,"-");
+    viaje = strCnt(viaje, actual->next->name);
+    actual = actual->next;
+  }
+  return viaje;
 }
 
 void airTripPrint(struct airTrip* trip) {
