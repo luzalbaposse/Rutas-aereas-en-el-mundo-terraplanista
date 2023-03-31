@@ -44,23 +44,23 @@ int main() {
 
     // strConcatenate - Casos
     // Un string vacio y un string de 3 caracteres
-    char* str4 = strConcatenate("","abc");
-    printf("strConcatenate(\"\",\"abc\") -> \"%s\"\n", str4);
+    char* str4 = strCnt("","abc");
+    printf("strCnt(\"\",\"abc\") -> \"%s\"\n", str4);
     free(str4);
 
     // Un string de 3 caracteres y un string vacio
-    char* str5 = strConcatenate("abc","");
-    printf("strConcatenate(\"abc\",\"\") -> \"%s\"\n", str5);
+    char* str5 = strCnt("abc","");
+    printf("strCnt(\"abc\",\"\") -> \"%s\"\n", str5);
     free(str5);
 
     //Dos strings de 1 caracter
-    char* str6 = strConcatenate("a","b");
-    printf("strConcatenate(\"a\",\"b\") -> \"%s\"\n", str6);
+    char* str6 = strCnt("a","b");
+    printf("strCnt(\"a\",\"b\") -> \"%s\"\n", str6);
     free(str6);
 
     //Dos strings de 5 caracteres
-    char* str7 = strConcatenate("abcde","fghij");
-    printf("strConcatenate(\"abcde\",\"fghij\") -> \"%s\"\n", str7);
+    char* str7 = strCnt("abcde","fghij");
+    printf("strCnt(\"abcde\",\"fghij\") -> \"%s\"\n", str7);
     free(str7);
  
     // flyLength
