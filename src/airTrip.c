@@ -185,28 +185,33 @@ void airTripAddBest(struct airTrip *trip, char *name, float longitude,float lati
 
 
 void airTripJoin(struct airTrip **tripJoin, struct airTrip *trip1, struct airTrip *trip2) {
-  // Creamos un struct airTrip nuevo con los datos del primer recorrido y del segundo recorrido
-  struct airTrip *nuevo = (struct airTrip *)malloc(sizeof(struct airTrip)); 
-  nuevo->plane = strDup(trip1->plane); 
-  nuevo->totalLength = trip1->totalLength + trip2->totalLength;
-  nuevo->first = trip1->first; 
-  // Creamos un airport auxiliar para recorrer la lista de aeropuertos del primer recorrido
-  struct airport *actual = trip1->first; 
-  // Mientras el aeropuerto siguiente no sea NULL, seguimos recorriendo la lista
-  while (actual->next != NULL) { 
-    actual = actual->next; 
+  char* avion; // Aca guardo el nombre de los aviones
+  if(strCmp(trip1->plane,trip2->plane) ==0){ // trip1 y trip2 son el mismo viaje
+    *tripJoin=airTripNew(trip1->plane);
+  }else{ // Caso que sean viajes distintos
+     avion= strCnt(trip1->plane,"-");
+     avion= strCnt(avion,trip2->plane);
+     *tripJoin=airTripNew(avion);
+    } 
+  //si el primero esta vacio
+  if(trip1->first==0){
+    (*tripJoin)->first = trip2->first;
+    return;
   }
-  // Agregamos la longitud del vuelo entre el ultimo aeropuerto del primer recorrido y el primer aeropuerto del segundo recorrido
-  nuevo->totalLength += flyLength(actual, trip2->first);
-  actual->next = trip2->first;
-  if (strCmp(trip1->plane, trip2->plane) !=0) { 
-  // Si los aviones son distintos, se agrega un guion al nombre del avion
-    nuevo->plane = strCnt(nuevo->plane,"-"); 
-    nuevo->plane = strCnt(nuevo->plane,trip2->plane);
-  free(trip1);       
-  free(trip2);       
-  *tripJoin = nuevo;
-}
+  // llego hasta el final de trip1
+  (*tripJoin)->first = trip1->first;
+  struct airport* actual = (*tripJoin)->first;
+  while(actual->next != 0){
+    actual = actual-> next;
+  }
+  // Conecto los trips
+  actual-> next = trip2->first; 
+  (*tripJoin)->totalLength = trip1->totalLength + trip2->totalLength + flyLength(actual, trip2->first);
+  // libero memoria
+  free(trip1->plane);
+  free(trip1);
+  free(trip2->plane);
+  free(trip2);
 }
 
 void airTripDelLast(struct airTrip *trip) {
