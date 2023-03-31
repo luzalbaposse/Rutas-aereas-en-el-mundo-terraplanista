@@ -3,8 +3,7 @@
 #include "airTrip.h"
 
 int main() {
-    /*
-    Consigna: Hacer casos de test para las funciones de airTrip.c
+
     // strDup - Casos
     // String vacío
     char* str1 = strDup("");
@@ -60,7 +59,7 @@ int main() {
     char* str7 = strConcatenate("abcde","fghij");
     printf("strConcatenate(\"abcde\",\"fghij\") -> \"%s\"\n", str7);
     free(str7);
- */
+ 
     // flyLength
     struct airport a1;
     struct airport a2;
@@ -75,79 +74,64 @@ int main() {
     float len = flyLength(&a1, &a2);
     printf("Len %f\n\n",len);
 
-    // airTripNew
-    struct airTrip* trip = airTripNew("R1234");
-
     //airTripAddLast - Casos
+    // Creo un nuevo trip para este caso de test
+    struct airTrip* CasoAddLast = airTripNew("A1234");
     // Agregar una parada a un recorrido vacío
-    airTripAddLast(trip, "P01", 1.0, 1.0);
-    airTripPrint(trip);
+    airTripAddLast(CasoAddLast, "P01", 1.0, 1.0);
+    airTripPrint(CasoAddLast);
     // printeo para ver que se agrego la parada P01 a un recorrido vacio
     printf("Se agrego la parada P01 a un recorrido vacio\n");
     printf("\n");
 
     // Agregar una parada a un recorrido de una sola parada
-    airTripAddLast(trip, "P02", 5.0, 5.0);
-    airTripPrint(trip);
+    airTripAddLast(CasoAddLast, "P02", 5.0, 5.0);
+    airTripPrint(CasoAddLast);
     // printeo para ver que se agrego la parada P02 a un recorrido de una sola parada
     printf("Se agrego la parada P02 a un recorrido de una sola parada\n ");
 
     // Agregar una parada a un recorrido de más de una parada
-    airTripAddLast(trip, "P03", 3.0, 3.0);
-    airTripPrint(trip);
+    airTripAddLast(CasoAddLast, "P03", 3.0, 3.0);
+    airTripPrint(CasoAddLast);
     // printeo para ver que se agrego la parada P03 a un recorrido de mas de una parada
     printf("Se agrego la parada P03 a un recorrido de mas de una parada\n");
     printf("\n");
 
-    // airTripAddBest - Casos
-    // Agregar una parada a un recorrido vacío
-    airTripAddBest(trip, "P01", 1.0, 1.0);
-    airTripPrint(trip);
-    printf("\n");
+    // Casos - airTripAddBest
+    //Creo un nuevo trip para este caso de test
+    struct airTrip* CasoAddBest = airTripNew("A5678");
+    // Caso en que se pide agregar una parada a un recorrido vacío
+    airTripAddBest(CasoAddBest, "P01", 1.0, 1.0);
+    // Caso en que se pide agregar una parada a un recorrido de una sola parada
+    airTripAddBest(CasoAddBest, "P02", 6.0, 7.0);
+    //Caso en que se pide agregar una parada a un recorrido de más de una parada tal que la parada quede en último lugar
+    airTripAddBest(CasoAddBest, "P03", 3.0, 3.0);
+    // Caso en que se pide agregar una parada a un recorrido de más de una parada tal que la parada quede en segundo lugar
+    airTripAddBest(CasoAddBest, "P02", 2.0, 2.0);
+    // Caso en que se pide agregar una parada a un recorrido de más de una parada de tal manera que la parada quede en tercer lugar
+    airTripAddBest(CasoAddBest, "P03", 2.5, 2.9);
 
-    // Agregar una parada a un recorrido de una sola parada
-    airTripAddBest(trip, "P02", 6.0, 7.0);
-    airTripPrint(trip);
-    printf("\n");
+// Casos - airTripJoin
+    // Creo nuevos trips para este caso de test
+    struct airTrip* CasoJoin1 = airTripNew("J1234");
+    struct airTrip* CasoJoin2 = airTripNew("J5678");
+    // Caso en que se pide unir dos recorridos vacíos
+    airTripJoin(CasoJoin1, CasoJoin2);
+    // Caso en que se pide unir un recorrido vacío con un recorrido de una sola parada
+    airTripAddLast(CasoJoin2, "P01", 1.0, 1.0);
+    airTripJoin(CasoJoin1, CasoJoin2);
+    // Caso en que se pide unir un recorrido vacío con un recorrido de más de dos paradas cada uno
+    airTripAddLast(CasoJoin2, "P02", 2.0, 2.0);
+    airTripAddLast(CasoJoin2, "P03", 3.0, 3.0);
+    airTripAddLast(CasoJoin1, "P01", 1.0, 1.0);
+    airTripAddLast(CasoJoin1, "P02", 8.00, 2.0);
+    airTripAddLast(CasoJoin1, "P03", 3.0, 3.0);
+    airTripJoin(CasoJoin1, CasoJoin2);
+    // Caso en que se pide unir un recorrido vacio con otro de una sola parada
+    // Creo nuevos recorridos para este caso de test
+    struct airTrip* CasoJoin3 = airTripNew("J9102");
+    
 
-    // Agregar una parada a un recorrido de más de una parada tal que la parada quede en último lugar
-    airTripAddBest(trip, "P03", 3.0, 3.0);
-    airTripPrint(trip);
-    printf("\n");
-
-    // Agregar ua parada a un recorrido de más de una parada tal que la parada quede en segundo lugar
-    airTripAddBest(trip, "P02", 2.0, 2.0);
-    airTripPrint(trip);
-    printf("\n");
-
-    // Agregar una parada a un recorrido de más de una parada tal que la parada quede en tercer lugar
-    airTripAddBest(trip, "P03", 2.5, 2.9);
-    airTripPrint(trip);
-    printf("\n");
-
-// Falta desde acá
-
-    // airTripPrint
-    airTripPrint(trip);
-    printf("\n");
-
-    // airTripAddBest
-    airTripAddBest(trip, "P01", 1.5, 1.5);
-    airTripAddBest(trip, "P02", 2.5, 2.5);
-    airTripAddBest(trip, "P03", 3.5, 3.5);
-    airTripAddBest(trip, "P00", 0.5, 0.5);
-    airTripPrint(trip);
-    printf("\n");
-/*
-// airTripJoin
-    struct airTrip* tripJoin;
-    struct airTrip* trip1 = airTripNew("R1234");
-    airTripAddLast(trip1, "Ra1", 1.0, 1.0);
-    struct airTrip* trip2 = airTripNew("R1234");
-    airTripAddLast(trip2, "Ra2", 2.0, 2.0);
-    airTripJoin(&tripJoin, trip1, trip2);
-    airTripPrint(tripJoin);
-    printf("\n");
 
     // airTripDelLast
     airTripDelLast(trip);
@@ -180,7 +164,7 @@ int main() {
     // airTripDelete
     airTripDelete(trip);
     airTripDelete(tripJoin);
-    */
+    
     return 0;
 }
 
