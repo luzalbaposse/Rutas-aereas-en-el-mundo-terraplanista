@@ -126,24 +126,24 @@ int main() {
     struct airTrip* Joined1 = airTripNew("J9012");
     struct airTrip* Joined2 = airTripNew("J9012");
     struct airTrip* Joined3 = airTripNew("J9012");
-    // Caso en que se pide unir dos recorridos vacíos
-    airTripJoin(Joined, CasoJoin1, CasoJoin2);
+    // Caso en que se pide unir dos recorridos vacíos - ACÁ HAY UN ERROR
+    airTripJoin(&Joined, CasoJoin1, CasoJoin2);
     // Caso en que se pide unir un recorrido vacío con un recorrido de una sola parada
     airTripAddLast(CasoJoin2, "P01", 1.0, 1.0);
-    airTripJoin(Joined1, CasoJoin1, CasoJoin2);
+    airTripJoin(&Joined1, CasoJoin1, CasoJoin2);
     // Caso en que se pide unir un recorrido vacío con un recorrido de más de dos paradas cada uno
     airTripAddLast(CasoJoin2, "P02", 2.0, 2.0);
-    airTripAddLast(CasoJoin2, "P03", 3.0, 3.0);
+    airTripAddLast(CasoJoin2, "P03", 3.0, 3.0); 
     airTripAddLast(CasoJoin1, "P01", 1.0, 1.0);
     airTripAddLast(CasoJoin1, "P02", 8.00, 2.0);
     airTripAddLast(CasoJoin1, "P03", 3.0, 3.0);
-    airTripJoin(Joined2, CasoJoin1, CasoJoin2);
+    airTripJoin(&Joined2, CasoJoin1, CasoJoin2);
     // Creo nuevos recorridos para este caso de test
     struct airTrip* CasoJoin3 = airTripNew("J9102");
     struct airTrip* CasoJoin4 = airTripNew("J9929");
     airTripAddLast(CasoJoin4, "P01", 8.0, 6.0);
     // Caso en que se pide unir un recorrido vacio con otro de una sola parada
-    airTripJoin(Joined3, CasoJoin3, CasoJoin4);
+    airTripJoin(&Joined3, CasoJoin3, CasoJoin4);
 
 
     // airTripDelLast - Casos
