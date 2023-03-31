@@ -6,6 +6,7 @@ int main() {
 
     // strDup - Casos
     // String vacío
+    printf("👀 Acá comienzan los casos de strDup\n");
     char* str1 = strDup("");
     printf("strDup(\"\") -> \"%s\"\n", str1);
     free(str1);
@@ -21,6 +22,8 @@ int main() {
     free(str3);
 
     // strCmp - Casos
+    printf("👀 Acá comienzan los casos de strCmp\n");
+
     // Dos strings vacíos
     int cmp1 = strCmp("","");
     printf("strCmp(\"\",\"\") -> %d\n", cmp1);
@@ -61,6 +64,7 @@ int main() {
     free(str7);
  
     // flyLength
+    printf("👀 Este es el test ya existente de FlyLength\n");
     struct airport a1;
     struct airport a2;
     a1.name = "a1";
@@ -75,6 +79,7 @@ int main() {
     printf("Len %f\n\n",len);
 
     //airTripAddLast - Casos
+    printf("👀 Acá comienzan los casos de airTripAddLast\n");
     // Creo un nuevo trip para este caso de test
     struct airTrip* CasoAddLast = airTripNew("A1234");
     // Agregar una parada a un recorrido vacío
@@ -98,6 +103,7 @@ int main() {
     printf("\n");
 
     // Casos - airTripAddBest
+    printf("👀 Acá comienzan los casos de airTripAddBest\n");
     //Creo un nuevo trip para este caso de test
     struct airTrip* CasoAddBest = airTripNew("A5678");
     // Caso en que se pide agregar una parada a un recorrido vacío
@@ -112,58 +118,133 @@ int main() {
     airTripAddBest(CasoAddBest, "P03", 2.5, 2.9);
 
 // Casos - airTripJoin
+    printf("👀 Acá comienzan los casos de airTripJoin\n");
     // Creo nuevos trips para este caso de test
     struct airTrip* CasoJoin1 = airTripNew("J1234");
     struct airTrip* CasoJoin2 = airTripNew("J5678");
+    struct airTrip* Joined = airTripNew("J9012");
+    struct airTrip* Joined1 = airTripNew("J9012");
+    struct airTrip* Joined2 = airTripNew("J9012");
+    struct airTrip* Joined3 = airTripNew("J9012");
     // Caso en que se pide unir dos recorridos vacíos
-    airTripJoin(CasoJoin1, CasoJoin2);
+    airTripJoin(Joined, CasoJoin1, CasoJoin2);
     // Caso en que se pide unir un recorrido vacío con un recorrido de una sola parada
     airTripAddLast(CasoJoin2, "P01", 1.0, 1.0);
-    airTripJoin(CasoJoin1, CasoJoin2);
+    airTripJoin(Joined1, CasoJoin1, CasoJoin2);
     // Caso en que se pide unir un recorrido vacío con un recorrido de más de dos paradas cada uno
     airTripAddLast(CasoJoin2, "P02", 2.0, 2.0);
     airTripAddLast(CasoJoin2, "P03", 3.0, 3.0);
     airTripAddLast(CasoJoin1, "P01", 1.0, 1.0);
     airTripAddLast(CasoJoin1, "P02", 8.00, 2.0);
     airTripAddLast(CasoJoin1, "P03", 3.0, 3.0);
-    airTripJoin(CasoJoin1, CasoJoin2);
-    // Caso en que se pide unir un recorrido vacio con otro de una sola parada
+    airTripJoin(Joined2, CasoJoin1, CasoJoin2);
     // Creo nuevos recorridos para este caso de test
     struct airTrip* CasoJoin3 = airTripNew("J9102");
+    struct airTrip* CasoJoin4 = airTripNew("J9929");
+    airTripAddLast(CasoJoin4, "P01", 8.0, 6.0);
+    // Caso en que se pide unir un recorrido vacio con otro de una sola parada
+    airTripJoin(Joined3, CasoJoin3, CasoJoin4);
+
+
+    // airTripDelLast - Casos
+    printf("👀 Acá comienzan los casos de airTripDelLast\n");
+    // Creo un nuevo trip para este caso de test
+    struct airTrip* CasoDel1 = airTripNew("D1234");
     
+    // CadoDel1 es un recorrido de más de dos paradas
+    airTripAddLast(CasoDel1, "P01", 1.0, 1.0);
+    airTripAddLast(CasoDel1, "P02", 2.0, 2.0);
+    airTripAddLast(CasoDel1, "P03", 3.0, 3.0);
+
+    //Borrar el último de un recorrido de mas de dos paradas
+
+    printf("CasoDel1 es un recorrido que tiene 3 paradas\n");
+    airTripDelLast(CasoDel1);
+    airTripPrint(CasoDel1);
+    printf("✈️ CasoDel1 ahora tiene 2 paradas");
+    // Borrar el último de un recorrido de exactamente dos paradas
+    airTripDelLast(CasoDel1);
+    airTripPrint(CasoDel1);
+     printf("✈️ CasoDel1 ahora tiene 1 parada");
+    //Borrar el último de un recorrido de exactamente una parada
+    airTripDelLast(CasoDel1);
+    airTripPrint(CasoDel1);
+    printf("✈️ CasoDel1 ahora tiene 0 paradas");
+    //Borrar el útlimo de un recorrido vacio
+    airTripDelLast(CasoDel1);
+    airTripPrint(CasoDel1);
+    printf("✈️ CasoDel1 devuelve 0 paradas");
 
 
-    // airTripDelLast
-    airTripDelLast(trip);
-    airTripDelLast(trip);
-    airTripDelLast(trip);
-    airTripDelLast(trip);
-    airTripPrint(trip);
-    printf("\n");
+    // airTripRemoveDuplicates - Casos
+    printf("👀 Acá comienzan los casos de airTripRemoveDuplicates\n");
+    // Creo un nuevo trip para este caso de test
+    struct airTrip* CasoRemoveDuplicates1 = airTripNew("R1234");
+    struct airTrip* CasoRemoveDuplicates2 = airTripNew("R5678");
+    struct airTrip* CasoRemoveDuplicates3 = airTripNew("R9102");
+    // Borrar duplicados de un recorrido sin duplicados
+    airTripAddLast(CasoRemoveDuplicates1, "P01", 1.0, 1.0);
+    airTripAddLast(CasoRemoveDuplicates1, "P02", 2.0, 2.0);
+    airTripAddLast(CasoRemoveDuplicates1, "P03", 3.0, 3.0);
+    airTripRemoveDuplicates(CasoRemoveDuplicates1);
 
+    //Borrar duplicados de un recorrido donde son todos iguales
+    airTripAddLast(CasoRemoveDuplicates2, "P01", 1.0, 1.0);
+    airTripAddLast(CasoRemoveDuplicates2, "P01", 1.0, 1.0);
+    airTripAddLast(CasoRemoveDuplicates2, "P01", 1.0, 1.0);
+    airTripRemoveDuplicates(CasoRemoveDuplicates2);
 
-    // airTripRemoveDuplicates
-    airTripAddLast(trip, "T01", 10.0, 10.0);
-    airTripAddLast(trip, "T02", 99.0, 99.0);
-    airTripAddLast(trip, "T01", 10.0, 10.0);
-    airTripAddLast(trip, "T02", 99.0, 99.0);
-    airTripAddBest(trip, "T01", 10.0, 10.0);
-    airTripAddBest(trip, "T02", 99.0, 99.0);
-    airTripAddBest(trip, "T01", 10.0, 10.0);
-    airTripAddBest(trip, "T02", 99.0, 99.0);
-    airTripPrint(trip);
-    airTripRemoveDuplicates(trip);
-    airTripPrint(trip);
-    printf("\n");
+    // Borrar duplicados de un recorrido donde todos se repiten al menos una ez en cualquier orden
+    airTripAddLast(CasoRemoveDuplicates3, "P01", 1.0, 1.0);
+    airTripAddLast(CasoRemoveDuplicates3, "P03", 3.0, 3.0);
+    airTripAddLast(CasoRemoveDuplicates3, "P01", 1.0, 1.0);
+    airTripAddLast(CasoRemoveDuplicates3, "P02", 2.0, 2.0);
+    airTripAddLast(CasoRemoveDuplicates3, "P04", 5.0, 2.0);
+    airTripAddLast(CasoRemoveDuplicates3, "P05", 6.0, 3.0);
+    airTripAddLast(CasoRemoveDuplicates3, "P02", 2.0, 2.0);
+    airTripAddLast(CasoRemoveDuplicates3, "P03", 3.0, 3.0);
+    airTripAddLast(CasoRemoveDuplicates3, "P04", 5.0, 2.0);
+    airTripAddLast(CasoRemoveDuplicates3, "P05", 6.0, 3.0);
+    airTripRemoveDuplicates(CasoRemoveDuplicates3);
+    
+    // airTripGetTrip - Casos
+    printf("👀 Acá comienzan los casos de airTripGetTrip\n");
+    // Creo un nuevo trip para este caso de test
+    struct airTrip* CasoGetTrip1 = airTripNew("G1234");
+    struct airTrip* CasoGetTrip2 = airTripNew("G5678");
 
-    // airTripGetTrip
-    char* t = airTripGetTrip(trip);
-    printf("%s\n",t);
-    free(t);
+    // Usar de parámetro un recorrido vacío
+    airTripGetTrip(CasoGetTrip1);
 
-    // airTripDelete
-    airTripDelete(trip);
-    airTripDelete(tripJoin);
+    //Usar de parámatro un recorrido de solo dos paradas
+    airTripAddLast(CasoGetTrip2, "P01", 1.0, 1.0);
+    airTripAddLast(CasoGetTrip2, "P02", 2.0, 2.0);
+    airTripGetTrip(CasoGetTrip2);
+
+    // Usar de parámetro un recorrido de una sola parada
+    airTripAddLast(CasoGetTrip1, "P01", 3.0, 3.0);
+    airTripGetTrip(CasoGetTrip1);
+
+    // Caso - airTripDelete
+    // Creo un struct para este caso de test
+    printf("👀 Acá comienzan los casos de airTripDelete\n");
+    struct airTrip * CasoTripDelete = airTripNew("D1234");
+    struct airTrip *CasoTripDelete2 = airTripNew("D5678");
+    struct airTrip* CasoTripDelete3 = airTripNew("D1919");
+
+    // Borrar un recorrido vacío
+    airTripDelete(CasoTripDelete);
+
+    // Borrar un recorrido de solo una parada
+    airTripAddLast(CasoTripDelete2, "P01", 1.0, 1.0);
+    airTripDelete(CasoTripDelete2);
+
+    //Borrar un recorrido de más de dos paradas
+    airTripAddLast(CasoTripDelete3, "P01", 1.0, 1.0);
+    airTripAddLast(CasoTripDelete3, "P02", 2.0, 2.0);
+    airTripAddLast(CasoTripDelete3, "P03", 3.0, 3.0);
+
+    airTripDelete(CasoTripDelete3);
     
     return 0;
 }
