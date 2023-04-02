@@ -315,7 +315,21 @@ char *airTripGetTrip(struct airTrip *trip) {
   return viaje;
 }
 
+void airTripPrint(struct airTrip *trip) {
+  printf("%s : %.2f\n", trip->plane, trip->totalLength);
+  struct airport *ap = trip->first;
+  while (ap != 0) {
+    printf("[%s:(%.2f,%.2f)]", ap->name, ap->latitude, ap->longitude);
+    ap = ap->next;
+  }
+  if (trip->first != 0) {
+    printf("\n");
+  }
+}
+
 void airTripDelete(struct airTrip *trip) {
+
+
   struct airport *ap = trip->first;
   while (ap != 0) {
     struct airport *next = ap->next;

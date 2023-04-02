@@ -257,7 +257,8 @@ int main() {
     airTripAddLast(CasoGetTrip2, "P01", 1.0, 1.0);
     airTripAddLast(CasoGetTrip2, "P02", 2.0, 2.0);
     printf("CasoGetTrip2 es un recorrido que tiene 2 paradas\n");
-    airTripGetTrip(CasoGetTrip2);
+    char* t = airTripGetTrip(CasoGetTrip2);
+    printf("%s\n", t);
     printf("✈️ Se aplicó GetTrip y CasoGetTrip2:\n");
     airTripPrint(CasoGetTrip2);
     
@@ -265,28 +266,32 @@ int main() {
     // Usar de parámetro un recorrido de una sola parada
     airTripAddLast(CasoGetTrip1, "P01", 3.0, 3.0);
     printf("CasoGetTrip1 es un recorrido que tiene 1 parada\n");
-    airTripGetTrip(CasoGetTrip1);
+    char* t1 = airTripGetTrip(CasoGetTrip1);
+    printf("%s\n", t1);
     printf("✈️ Se aplicó GetTrip y CasoGetTrip1:\n");
     airTripPrint(CasoGetTrip1);
 
     // Caso - airTripDelete
     // Creo un struct para este caso de test
     printf("👀 Acá comienzan los casos de airTripDelete\n");
-    struct airTrip * CasoTripDelete = airTripNew("D1234");
-    struct airTrip *CasoTripDelete2 = airTripNew("D5678");
+    struct airTrip* CasoTripDelete = airTripNew("D1234");
+    struct airTrip* CasoTripDelete2 = airTripNew("D5678");
     struct airTrip* CasoTripDelete3 = airTripNew("D1919");
     printf("CasoTripDelete es un recorrido vacío\n");
     // Borrar un recorrido vacío
     airTripDelete(CasoTripDelete);
     printf("✈️ Se aplicó Delete y CasoTripDelete se eliminó\n");
-    airTripPrint(CasoTripDelete);
+    if (airTripGetTrip(CasoTripDelete)== NULL)
+    {
+        printf("true\n");
+    }
+    
 
     // Borrar un recorrido de solo una parada
     printf("CasoTripDelete2 es un recorrido que tiene 1 parada\n");
     airTripAddLast(CasoTripDelete2, "P01", 1.0, 1.0);
     airTripDelete(CasoTripDelete2);
     printf("✈️ Se aplicó Delete y CasoTripDelete2:\n");
-    airTripPrint(CasoTripDelete2);
 
     //Borrar un recorrido de más de dos paradas
     airTripAddLast(CasoTripDelete3, "P01", 1.0, 1.0);
@@ -295,7 +300,7 @@ int main() {
     printf("CasoTripDelete3 es un recorrido que tiene 3 paradas\n");
     airTripDelete(CasoTripDelete3);
     printf("✈️ Se aplicó Delete y CasoTripDelete3:\n");
-    airTripPrint(CasoTripDelete3);
+    
 
     // Terminaron los casos de test! Wooooooo
     printf("🎉 Terminaron los casos de test! Wooooooo\n");
@@ -303,6 +308,3 @@ int main() {
     
     return 0;
 }
-
-
-    
