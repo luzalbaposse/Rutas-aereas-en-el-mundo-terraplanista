@@ -263,19 +263,46 @@ void airTripRemoveDuplicates(struct airTrip* trip) {
       }  
       siguiente = siguiente->next;
     }  
-    trip->totalLength += flyLength(actual, actual->next);// Se van sumando los aeropuertos de uno en uno, luego de eliminar los duplicados
+    if (actual->next == NULL){ 
+      return;     
+    }else{
+      trip->totalLength += flyLength(actual, actual->next);// Se van sumando los aeropuertos de uno en uno, luego de eliminar los duplicados
+    }
+
     actual = actual->next; // El aeropuerto actual pasa a ser el aeropuerto siguiente al actual
   }
 }
 
 
 char *airTripGetTrip(struct airTrip *trip) {
-  // Creamos un string auxiliar para concatenar los nombres de los aeropuertos
-  char* viaje = (char*)malloc(sizeof(char)); 
+  
   // Si el vuelo es NULL, retornamos el string vacio
-  if (trip == NULL){
-    return viaje;
+  if (trip->first == NULL){
+    return NULL;
   }
+
+  // Si el vuelo es NULL, retornamos el string vacio
+  if (trip->first->next == NULL){
+    return strDup(trip->first->name);
+  }
+
+  //Reccoremos el viaje para ver cuanto espacio van a ocupar todos los nombres
+  struct airport* current = trip->first;
+  int i = 0;
+  int trip_len = 0;
+  while (current != NULL){
+    i = 0;
+    while ((current->name)[i] != 0 ){
+      i++;
+    }
+    trip_len += i;
+    trip_len++;
+    current = current->next;
+  }
+  
+  // Creamos un string auxiliar para concatenar los nombres de los aeropuertos
+  char* viaje = (char*)malloc(sizeof(char)*(trip_len)); 
+
   // Creamos un struct airport auxiliar para recorrer la lista de aeropuertos
   struct airport* actual = trip->first;
   viaje = strCnt(viaje, actual->name);
@@ -286,18 +313,6 @@ char *airTripGetTrip(struct airTrip *trip) {
     actual = actual->next;
   }
   return viaje;
-}
-
-void airTripPrint(struct airTrip *trip) {
-  printf("%s : %.2f\n", trip->plane, trip->totalLength);
-  struct airport *ap = trip->first;
-  while (ap != 0) {
-    printf("[%s:(%.2f,%.2f)]", ap->name, ap->latitude, ap->longitude);
-    ap = ap->next;
-  }
-  if (trip->first != 0) {
-    printf("\n");
-  }
 }
 
 void airTripDelete(struct airTrip *trip) {
