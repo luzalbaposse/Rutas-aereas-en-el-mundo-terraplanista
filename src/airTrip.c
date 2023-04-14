@@ -200,7 +200,7 @@ void airTripJoin(struct airTrip **tripJoin, struct airTrip *trip1, struct airTri
      avion= strCnt(trip1->plane,"-");
      avion= strCnt(avion,trip2->plane);
      *tripJoin=airTripNew(avion);
-    } 
+    }
   //si el primero esta vacio
   if(trip1->first==0){
     (*tripJoin)->first = trip2->first;
@@ -213,13 +213,13 @@ void airTripJoin(struct airTrip **tripJoin, struct airTrip *trip1, struct airTri
     actual = actual-> next;
   }
   // Conecto los trips
-  actual-> next = trip2->first; 
+  actual-> next = trip2->first;
   (*tripJoin)->totalLength = trip1->totalLength + trip2->totalLength + flyLength(actual, trip2->first);
   // libero memoria
   free(trip1->plane);
-  free(trip1);
   free(trip2->plane);
-  free(trip2);
+  airTripDelete(trip1);
+  airTripDelete(trip2);
 }
 
 void airTripDelLast(struct airTrip *trip) {
