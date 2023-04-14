@@ -18,6 +18,8 @@ char *strDup(char *src) {
     dest[i] = src[i];
     i++;
   }
+  // Agregamos el terminador nulo al final del string
+  dest[i] = '\0';
   // Retornamos el puntero al nuevo string
   return dest;
 }
@@ -51,20 +53,22 @@ int strCmp(char *a, char *b) {
 }
 
 char *strCnt(char *src1, char *src2) {
-  if (src1 == NULL ||
-      src2 == NULL) { 
-    // Si alguno de los strings es NULL, retorna NULL
+  if (src1 == NULL && src2 == NULL) { 
+    // Si ambos strings son NULL, retorna NULL
     return NULL;
-    // Retorna NULL
   }
   int len1 = 0;
-  while (src1[len1] != '\0') { 
-    // Calculamos el largo de src1
-    len1++;                    
+  if (src1 != NULL) {
+    while (src1[len1] != '\0') { 
+      // Calculamos el largo de src1
+      len1++;                    
+    }
   }
   int len2 = 0;
-  while (src2[len2] != '\0') { // Calculamos el largo de src2
-    len2++;                    
+  if (src2 != NULL) {
+    while (src2[len2] != '\0') { // Calculamos el largo de src2
+      len2++;                    
+    }
   }
 
   char *dest = (char *)malloc(
@@ -73,17 +77,21 @@ char *strCnt(char *src1, char *src2) {
     return NULL;
   }
 
-  int i = 0;                // Copiamos src1 en la nueva cadena
-  while (src1[i] != '\0') { // Mientras no lleguemos al final de src1
-    dest[i] = src1[i];      // Copiamos el caracter
-    i++;                    
+  int i = 0; // Copiamos src1 en la nueva cadena
+  if (src1 != NULL) {
+    while (src1[i] != '\0') { // Mientras no lleguemos al final de src1
+      dest[i] = src1[i];      // Copiamos el caracter
+      i++;                    
+    }
   }
 
   int j = 0;
-  while (src2[j] != '\0') { // Copiamos src2 en la nueva cadena
-    dest[i] = src2[j];
-    i++;
-    j++;
+  if (src2 != NULL) {
+    while (src2[j] != '\0') { // Copiamos src2 en la nueva cadena
+      dest[i] = src2[j];
+      i++;
+      j++;
+    }
   }
 
   dest[i] = '\0'; // Agregamos el caracter nulo al final de la cadena
