@@ -288,7 +288,7 @@ void airTripRemoveDuplicates(struct airTrip* trip) {
 
 
 char *airTripGetTrip(struct airTrip *trip) {
-  
+
   // Si el vuelo es NULL, retornamos el string vacio
   if (trip->first == NULL){
     return NULL;
@@ -305,29 +305,28 @@ char *airTripGetTrip(struct airTrip *trip) {
   int trip_len = 0;
   while (current != NULL){
     i = 0;
-    while ((current->name)[i] != 0 ){
+    while ((current->name)[i] != '\\0' ){
       i++;
     }
     trip_len += i;
     trip_len++;
     current = current->next;
   }
-  
+
   // Creamos un string auxiliar para concatenar los nombres de los aeropuertos
-  char* viaje = (char*)malloc(sizeof(char)*(trip_len)); 
+  char* viaje = (char*)malloc(sizeof(char)*(trip_len));
 
   // Creamos un struct airport auxiliar para recorrer la lista de aeropuertos
   struct airport* actual = trip->first;
   viaje = strCnt(viaje, actual->name);
   // Mientras el aeropuerto siguiente no sea NULL, seguimos recorriendo la lista y lo que vamos a hacer es concatenar los nombres de los aeropuertos
-  while (actual->next != NULL){ 
+  while (actual->next != NULL){
     viaje = strCnt(viaje,"-");
     viaje = strCnt(viaje, actual->next->name);
     actual = actual->next;
   }
   return viaje;
 }
-
 void airTripPrint(struct airTrip *trip) {
   printf("%s : %.2f\n", trip->plane, trip->totalLength);
   struct airport *ap = trip->first;
