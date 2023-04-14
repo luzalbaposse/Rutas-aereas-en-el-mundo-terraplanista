@@ -162,10 +162,11 @@ void airTripAddBest(struct airTrip *trip, char *name, float longitude,float lati
   struct airport *correcto = trip->first;
   correcto = actual;
   while (actual->next != NULL) {
-  // Si la longitud del vuelo es menor, entonces agregamos el nuevo aeropuerto
+    // Si la longitud del vuelo es menor, entonces agregamos el nuevo aeropuerto
     length2 = flyLength(actual, nuevo) + flyLength(nuevo, actual->next);
-    if (length2 < length1) {
+    if (length2 - flyLength(actual, actual->next) < length1) {
       correcto = actual;
+      length1 = length2 - flyLength(actual, actual->next);
     }
     // Entre el aeropuerto actual y el siguiente aeropuerto de la lista
     if (strCmp(nuevo->name, actual->name) == 0){
@@ -180,7 +181,7 @@ void airTripAddBest(struct airTrip *trip, char *name, float longitude,float lati
   }
   if (trip->totalLength + flyLength(trip->first, nuevo) + flyLength(nuevo, trip->first->next) - flyLength(trip->first, trip->first->next) < trip->totalLength + flyLength(actual, nuevo)){
     correcto = trip->first;
-  } 
+  }
   if (correcto->next == NULL){ // Si el aeropuerto correcto es el ultimo de la lista
     correcto->next = nuevo; // Agregamos el nuevo aeropuerto al final de la lista
     trip->totalLength += flyLength(correcto, nuevo);
@@ -190,7 +191,6 @@ void airTripAddBest(struct airTrip *trip, char *name, float longitude,float lati
     trip->totalLength = trip->totalLength + flyLength(correcto, nuevo) + flyLength(nuevo, nuevo->next) - flyLength(correcto, nuevo->next);
   }
 }
-
 
 void airTripJoin(struct airTrip **tripJoin, struct airTrip *trip1, struct airTrip *trip2) {
   char* avion; // Aca guardo el nombre de los aviones
