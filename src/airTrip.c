@@ -223,25 +223,26 @@ void airTripJoin(struct airTrip **tripJoin, struct airTrip *trip1, struct airTri
 }
 
 void airTripDelLast(struct airTrip *trip) {
-  struct airport *actual = trip->first; 
+  struct airport *actual = trip->first;
   struct airport *anterior = NULL;
   if (trip->first == NULL){
     return;
   }
   if (actual->next == NULL){
+    free(actual->name);
     free(actual);
     trip->totalLength = 0.0;
     trip->first = NULL;
     return;
   }
-  
-  
+
+
   // Creamos airport actual y airport anterior para recorrer la lista de aeropuertos, funcionan como auxiliares
 
   while (actual->next != NULL) {
     // Si se cumple que el aeropuerto siguiente al actual es NULL, entonces el aeropuerto actual es el ultimo de la lista
-    anterior = actual;     
-    actual = actual->next; 
+    anterior = actual;
+    actual = actual->next;
 
   }
   trip->totalLength = trip->totalLength - flyLength(actual, anterior);
@@ -250,6 +251,7 @@ void airTripDelLast(struct airTrip *trip) {
   anterior->next = NULL; // El aeropuerto siguiente al anterior pasa a ser NULL
 
 }
+
 
 void airTripRemoveDuplicates(struct airTrip* trip) {  
   // Creamos 3 structs airport auxiliar para recorrer la lista de aeropuertos
