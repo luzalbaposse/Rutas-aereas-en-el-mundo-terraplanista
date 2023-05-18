@@ -53,23 +53,40 @@ int strCmp(char *a, char *b) {
 }
 
 char *strCnt(char *src1, char *src2) {
-  if (src1 == NULL && src2 == NULL) { 
-    // Si ambos strings son NULL, retorna NULL
-    return NULL;
-  }
-  int len1 = 0;
-  if (src1 != NULL) {
-    while (src1[len1] != '\0') { 
-      // Calculamos el largo de src1
-      len1++;                    
+/*
+Esta función concatena dos cadenas de caracteres y devuelve la cadena resultante.
+La corrección era que si alguno de los dos es NULL pero el otro no, no deberían devolver NULL.
+*/
+   // Defino las variables que voy a utilizar
+    int int1 = 0;  
+    int int2 = 0; 
+    int long = int1 + int2; 
+    char* strnew = (char*)malloc(sizeof(char)*(long+1)); 
+    int uno = 0; 
+    int dos = 0; 
+// Mientras src1 no sea 0, int1 aumenta en 1
+    while (src1[int1]!=0){
+        int1++;
+        } 
+// Mientras src2 no sea 0, int2 aumenta en 1
+    while (src2[int2]!=0){
+        int2++;
+        } 
+
+// Mientras src1 no sea 0, strnew[uno] es igual a src1[uno] y uno aumenta en 1
+    while(dos != int1){ 
+        strnew[dos] = src1[dos];
+        dos++;
+    } 
+// Mientras src2 no sea 0, strnew[uno] es igual a src2[uno] y uno aumenta en 1
+    while(uno!= int2){
+        strnew[k] = src2[i];
+        dos++; uno++;
     }
-  }
-  int len2 = 0;
-  if (src2 != NULL) {
-    while (src2[len2] != '\0') { // Calculamos el largo de src2
-      len2++;                    
-    }
-  }
+    strnew[int1+int2] = 0;
+    return strnew;
+}
+
 
   char *dest = (char *)malloc(
       sizeof(char) * (len1 + len2 + 1)); // Reservamos memoria para la nueva cadena
