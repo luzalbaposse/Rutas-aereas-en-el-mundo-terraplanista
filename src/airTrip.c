@@ -24,32 +24,15 @@ char *strDup(char *src) {
   return dest;
 }
 
-int strCmp(char *a, char *b) {
-  int i = 0;
-  // Mientras no lleguemos al final de los strings
-  while (a[i] != '\0' && b[i] != '\0') {
-    // Si el caracter de a es menor que el de b
-    if (a[i] < b[i]) {
-      return 1;
-    }
-    // Si el caracter de a es mayor que el de b
-    else if (a[i] > b[i]) {
-      return -1;
-    }
-    i++;
-  }
-  // Si llegamos al final de los strings
-  if (a[i] == '\0' && b[i] == '\0') {
+int strCmp(char* a, char* b) {
+
+    int i = 0;
+    while (a[i]!=0 && b[i]!=0 && a[i]==b[i]){i++;} // Mientras no lleguemos al final de alguno de los strings y los caracteres sean iguales, incrementamos el contador  
+    if(a[i]<b[i]){return 1;} // 
+    else if (a[i]>b[i]){return -1;}
+    else{return 0;}
+
     return 0;
-  }
-  // Si llegamos al final de a
-  else if (a[i] == '\0') {
-    return 1;
-  }
-  // Si llegamos al final de b
-  else {
-    return -1;
-  }
 }
 
 char *strCnt(char *src1, char *src2) {
@@ -234,7 +217,7 @@ void airTripAddBest(struct airTrip* trip, char* name, float longitude, float lat
         trip->totalLength += minExtraLength;
     }
 }
-
+/*
 void airTripJoin(struct airTrip** tripJoin, struct airTrip* trip1, struct airTrip* trip2) {
   char* avion; // Nombre del avión que se usará en el viaje resultante
   
@@ -273,7 +256,49 @@ void airTripJoin(struct airTrip** tripJoin, struct airTrip* trip1, struct airTri
   airTripDelete(trip1);
   airTripDelete(trip2);
 }
+*/
+void airTripJoin(struct airTrip** tripJoin, struct airTrip* trip1, struct airTrip* trip2){
 
+    char* joinedPlaneName;
+    // Variable que contendrá el nombre del avión unido
+
+    if (strCmp(trip1->plane, trip2->plane) == 0) {
+        // Se verifica si el nombre del avión en ambos recorridos es igual
+        joinedPlaneName = strDup(trip1->plane);
+        // Se devuelve el nombre del primer avión
+    } else {
+        // Si los aviones tienen nombres distintos
+        joinedPlaneName = strCnt(trip1->plane, "-");
+        char* temp = joinedPlaneName;
+        joinedPlaneName = strCnt(joinedPlaneName, trip2->plane);
+        // Se unen los dos nombres de avión con un guión de por medio
+        free(temp);
+    }
+
+    struct airTrip* joinedTrip = airTripNew(joinedPlaneName);
+    // Se crea un nuevo airTrip con el nombre de avión unido
+    free(joinedPlaneName);
+
+    struct airport* current = trip1->first;
+    while (current != NULL) {
+        // Agrega cada aeropuerto del primer airTrip al nuevo airTrip
+        airTripAddLast(joinedTrip, current->name, current->longitude, current->latitude);
+        current = current->next;
+    }
+
+    current = trip2->first;
+    while (current != NULL) {
+        // Agrega cada aeropuerto del segundo airTrip al nuevo airTrip
+        airTripAddLast(joinedTrip, current->name, current->longitude, current->latitude);
+        current = current->next;
+    }
+
+    *tripJoin = joinedTrip;
+    airTripDelete(trip1);
+    airTripDelete(trip2);
+    // Se eliminan los dos airTrip originales y se asigna el nuevo airTrip al puntero doble tripJoin
+
+}
 
 void airTripDelLast(struct airTrip *trip) {
   // Esta funcion elimina el ultimo aeropuerto de la lista
@@ -362,9 +387,7 @@ char* airTripGetTrip(struct airTrip* trip) {
 
   // Creamos un string auxiliar con la longitud calculada
   char* viaje = (char*)malloc(sizeof(char) * (trip_len + 1));
-  viaje[0] = '\0'; // Inicializamos el string vacío
-
-  // Concatenamos los nombres de los aeropuertos separados por guiones
+ //viaje[0] = '\0'; // Inicializamos el string vacío
   current = trip->first;
   char* delimiter = ""; // String vacío como delimitador inicial
   while (current != NULL) {
