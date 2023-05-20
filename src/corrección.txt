@@ -1,0 +1,32 @@
+Hola,
+A continuación les dejo las notas de corrección de su TP. Como toda instancia de evaluación tienen la posibilidad armar un pedido de revisión indicando que errores encontraron en la evaluación. Por otro lado, les pido que verifiquen los integrantes de su grupo, en caso de encontrar algún error informenlo a la brevedad.
+
+# Integrantes
+Alba Posse, Maria Luz
+Ibarra, Tomas
+Catz, Thomas
+
+# General:
+-
+
+# EJ1:
+strDup: No ponen terminador. LISTO
+strCnt: Si alguno de los dos es NULL pero el otro no, no deberían devolver NULL. LISTO
+
+# EJ2:
+AddBest: No se calcula correctamente la distancia al comparar, se debe restar la original. LISTO
+TripJoin: Se pierden strings.LISTO
+DelLast: en el caso de un solo nodo, no libera el nombre. LISTO 
+RemoveDuplicates: no libera el nombre. Si se borra un nodo, se pierde la info para ir al siguiente. LISTO
+GetTrip: Pide memoria que después pierde, y varias veces pierde el puntero a un string al pisarlo con uno nuevo. LISTO
+
+# EJ3:
+OK
+
+# Valgrind y test:
+Multiples errores, revisar y corregir.
+
+#NOTA: 49
+
+Saludos,
+Pablo
