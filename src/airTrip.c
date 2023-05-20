@@ -291,12 +291,15 @@ char* airTripGetTrip(struct airTrip* trip) {
   if (trip->first->next == NULL) {
     return strDup(trip->first->name);
   }
-
-  // Calculamos la longitud total del string resultante sumando la longitud de todos los nombres y los guiones
   int trip_len = 0;
   struct airport* current = trip->first;
   while (current != NULL) {
-    trip_len += strlen(current->name);
+    // Recorremos manualmente la cadena para calcular su longitud
+    int name_len = 0;
+    while (current->name[name_len] != '\0') {
+      name_len++;
+    }
+    trip_len += name_len; // Añadimos la longitud del nombre del aeropuerto
     trip_len++; // Añadimos un espacio para el guion
     current = current->next;
   }
