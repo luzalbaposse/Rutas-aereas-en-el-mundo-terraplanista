@@ -96,34 +96,6 @@ char *strCnt(char *src1, char *src2) {
   return strnew;
 }
 
-  char *dest = (char *)malloc(
-      sizeof(char) * (len1 + len2 + 1)); // Reservamos memoria para la nueva cadena
-  if (dest == NULL) { // Si no se pudo reservar memoria, retorna NULL
-    return NULL;
-  }
-
-  int i = 0; // Copiamos src1 en la nueva cadena
-  if (src1 != NULL) {
-    while (src1[i] != '\0') { // Mientras no lleguemos al final de src1
-      dest[i] = src1[i];      // Copiamos el caracter
-      i++;                    
-    }
-  }
-
-  int j = 0;
-  if (src2 != NULL) {
-    while (src2[j] != '\0') { // Copiamos src2 en la nueva cadena
-      dest[i] = src2[j];
-      i++;
-      j++;
-    }
-  }
-
-  dest[i] = '\0'; // Agregamos el caracter nulo al final de la cadena
-
-  return dest;
-}
-
 float flyLength(struct airport *a1, struct airport *a2) {
   float deltaLon = a1->longitude - a2->longitude;
   float deltaLat = a1->latitude - a2->latitude;
