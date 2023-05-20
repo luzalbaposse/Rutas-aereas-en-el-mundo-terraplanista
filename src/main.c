@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "airTrip.h"
+#include "airTrip.c"   
 
 int main() {
 
