@@ -187,8 +187,9 @@ void airTripJoin(struct airTrip** tripJoin, struct airTrip* trip1, struct airTri
     *tripJoin = airTripNew(planeCopy); // Creamos el viaje resultante
     free(planeCopy); // Liberamos la memoria
   } else { // Caso que sean viajes distintos
-    avion = strCat(trip1->plane, "-"); // Concatenamos el nombre de los aviones
-    avion = strCat(avion, trip2->plane); 
+    avion = strCnt (avion, trip1->plane) ;
+    avion = strCnt (avion,"-"); // Concatenamos el nombre de los aviones
+    avion = strCnt (avion, trip2->plane);
     *tripJoin = airTripNew(avion); // Creamos el viaje resultante
     free(avion);
   }
