@@ -186,41 +186,42 @@ void airTripAddBest(struct airTrip *trip, char *name, float longitude, float lat
 
 
 void airTripJoin(struct airTrip** tripJoin, struct airTrip* trip1, struct airTrip* trip2) {
-  char* joinedPlaneName;
+  
+  char* TripName;
     // Variable que contendrá el nombre del avión unido
 
     if (strCmp(trip1->plane, trip2->plane) == 0) {
         // Se verifica si el nombre del avión en ambos recorridos es igual
-        joinedPlaneName = strDup(trip1->plane);
+        TripName = strDup(trip1->plane);
         // Se devuelve el nombre del primer avión
     } else {
         // Si los aviones tienen nombres distintos
-        joinedPlaneName = strCnt(trip1->plane, "-");
-        char* temp = joinedPlaneName;
-        joinedPlaneName = strCnt(joinedPlaneName, trip2->plane);
+        TripName = strCnt(trip1->plane, "-");
+        char* temp = TripName;
+        TripName = strCnt(TripName, trip2->plane);
         // Se unen los dos nombres de avión con un guión de por medio
         free(temp);
     }
 
-    struct airTrip* joinedTrip = airTripNew(joinedPlaneName);
+    struct airTrip* Trip = airTripNew(TripName);
     // Se crea un nuevo airTrip con el nombre de avión unido
-    free(joinedPlaneName);
+    free(TripName);
 
     struct airport* current = trip1->first;
     while (current != NULL) {
         // Agrega cada aeropuerto del primer airTrip al nuevo airTrip
-        airTripAddLast(joinedTrip, current->name, current->longitude, current->latitude);
+        airTripAddLast(Trip, current->name, current->longitude, current->latitude);
         current = current->next;
     }
 
     current = trip2->first;
     while (current != NULL) {
         // Agrega cada aeropuerto del segundo airTrip al nuevo airTrip
-        airTripAddLast(joinedTrip, current->name, current->longitude, current->latitude);
+        airTripAddLast(Trip, current->name, current->longitude, current->latitude);
         current = current->next;
     }
 
-    *tripJoin = joinedTrip;
+    *tripJoin = Trip;
     airTripDelete(trip1);
     airTripDelete(trip2);
     // Se eliminan los dos airTrip originales y se asigna el nuevo airTrip al puntero doble tripJoin
@@ -247,13 +248,14 @@ void airTripDelLast(struct airTrip *trip) {
   } else {
     trip->first = NULL;
   }
+
+  free(actual->name); // Liberamos la memoria del aeropuerto actual
   if (anterior != NULL) { // Si el aeropuerto anterior no es NULL, significa que la lista tiene más de un aeropuerto
     trip->totalLength = trip->totalLength - flyLength(anterior, actual);
   } else {
     trip->totalLength = 0.0; // Si el aeropuerto anterior es NULL, significa que la lista tiene un solo aeropuerto
   }
 
-  free(actual->name); // Liberamos la memoria del aeropuerto actual
   free(actual); // Liberamos la memoria del aeropuerto actual
 }
 
@@ -290,42 +292,28 @@ void airTripRemoveDuplicates(struct airTrip* trip) {
 }
 
 char* airTripGetTrip(struct airTrip* trip) {
+  
   // Si el vuelo es NULL, retornamos el string vacío
   if (trip->first == NULL) {
-    return NULL;
+    return strDup("");
   }
 
-  // Si el vuelo tiene una única parada, retornamos una copia del nombre de esa parada
-  if (trip->first->next == NULL) {
-    return strDup(trip->first->name);
-  }
-  int trip_len = 0;
-  struct airport* current = trip->first;
-  while (current != NULL) {
-    // Recorremos manualmente la cadena para calcular su longitud
-    int name_len = 0;
-    while (current->name[name_len] != '\0') {
-      name_len++;
-    }
-    trip_len += name_len; // Añadimos la longitud del nombre del aeropuerto
-    trip_len++; // Añadimos un espacio para el guion
-    current = current->next;
-  }
-
-  // Creamos un string auxiliar con la longitud calculada
-  char* viaje = (char*)malloc(sizeof(char) * (trip_len + 1));
-  viaje[0] = '\0'; // Inicializamos el string vacío
+  // Creamos un string auxiliar 
+  char* viaje = strDup(trip->first->name);
+  struct airport* current = trip->first->next;
 
   // Concatenamos los nombres de los aeropuertos separados por guiones
-  current = trip->first;
-  char* delimiter = ""; // String vacío como delimitador inicial
   while (current != NULL) {
-    viaje = strCnt(viaje, delimiter);
-    viaje = strCnt(viaje, current->name);
-    delimiter = "-"; // Establecemos el guion como delimitador para las siguientes concatenaciones
-    current = current->next;
+    // Mientras la parada actual no sea nula
+        char* temp = viaje;
+        viaje = strCnt(viaje, "-"); // Agrega un guion al final del string de retorno
+        free(temp);
+        temp = viaje;
+        viaje = strCnt(viaje, current->name);// Se agrega el nombre de la siguiente parada al string de retorno
+        free(temp);
+        current = current->next;// Cambia la parada actual a la siguiente
   }
-  free(delimiter);
+  
   return viaje;
 }
 

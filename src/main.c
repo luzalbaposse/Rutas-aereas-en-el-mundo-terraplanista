@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "airTrip.h"
-#include "airTrip.c"   
 
 int main() {
 
@@ -64,21 +63,6 @@ int main() {
     printf("strCnt(\"abcde\",\"fghij\") -> \"%s\"\n", str7);
     free(str7);
  
-    // flyLength
-    printf("👀 Este es el test ya existente de FlyLength\n");
-    struct airport a1;
-    struct airport a2;
-    a1.name = "a1";
-    a1.latitude = 1.0;
-    a1.longitude = 1.0;
-    a1.next = 0;
-    a2.name = "a2";
-    a2.latitude = 2.0;
-    a2.longitude = 2.0;
-    a2.next = 0;
-    float len = flyLength(&a1, &a2);
-    printf("Len %f\n\n",len);
-
     //airTripAddLast - Casos
     printf("👀 Acá comienzan los casos de airTripAddLast\n");
     // Creo un nuevo trip para este caso de test
@@ -132,42 +116,74 @@ int main() {
     printf("Se agregó la parada P03 a un recorrido de más de una parada de tal manera que la parada quede en tercer lugar\n");
     airTripPrint(CasoAddBest);
 
+    airTripDelete(CasoAddBest);
+
 // Casos - airTripJoin
     printf("👀 Acá comienzan los casos de airTripJoin\n");
-    // Creo nuevos trips para este caso de test
-    struct airTrip* CasoJoin1 = airTripNew("J1234");
-    struct airTrip* CasoJoin2 = airTripNew("J5678");
-    struct airTrip* Joined = airTripNew("J9012");
-    struct airTrip* Joined1 = airTripNew("J9012");
-    struct airTrip* Joined2 = airTripNew("J9012");
-    struct airTrip* Joined3 = airTripNew("J9012");
-    // Caso en que se pide unir dos recorridos vacíos
-    airTripJoin(&Joined, CasoJoin1, CasoJoin2);
-    printf("Se unieron dos recorridos vacíos\n");
-    airTripPrint(Joined);
-    // Caso en que se pide unir un recorrido vacío con un recorrido de una sola parada
-    airTripAddLast(CasoJoin2, "P01", 1.0, 1.0);
-    airTripJoin(&Joined1, CasoJoin1, CasoJoin2);
-    printf("Se unieron un recorrido vacío con un recorrido de una sola parada\n");
-    airTripPrint(Joined1);
-    // Caso en que se pide unir un recorrido vacío con un recorrido de más de dos paradas cada uno
-    airTripAddLast(CasoJoin2, "P02", 2.0, 2.0);
-    airTripAddLast(CasoJoin2, "P03", 3.0, 3.0); 
-    airTripAddLast(CasoJoin1, "P01", 1.0, 1.0);
-    airTripAddLast(CasoJoin1, "P02", 8.00, 2.0);
-    airTripAddLast(CasoJoin1, "P03", 3.0, 3.0);
-    airTripJoin(&Joined2, CasoJoin1, CasoJoin2);
-    printf("Se unieron un recorrido vacío con un recorrido de más de dos paradas cada uno\n");
-    airTripPrint(Joined2);
-    // Creo nuevos recorridos para este caso de test
-    struct airTrip* CasoJoin3 = airTripNew("J9102");
-    struct airTrip* CasoJoin4 = airTripNew("J9929");
-    airTripAddLast(CasoJoin4, "P01", 8.0, 6.0);
-    // Caso en que se pide unir un recorrido vacio con otro de una sola parada
-    airTripJoin(&Joined3, CasoJoin3, CasoJoin4);
-    printf("Se unieron un recorrido vacio con otro de una sola parada\n");
-    airTripPrint(Joined3);
+    struct airTrip* tripJoin1;
+    struct airTrip* trip3 = airTripNew("R1234");
+    struct airTrip* trip4 = airTripNew("R4321");
 
+    printf("--Unir dos recorridos vacios\n");
+    printf("---Recorridos input:\n");
+    airTripPrint(trip3);
+    airTripPrint(trip4);
+    airTripJoin(&tripJoin1, trip3, trip4);
+    printf("---Recorrido output:\n");
+    airTripPrint(tripJoin1);
+    airTripDelete(tripJoin1);
+    printf("\n");
+
+
+    struct airTrip* tripJoin2;
+    struct airTrip* trip3_1 = airTripNew("R1234");
+    struct airTrip* trip4_1 = airTripNew("R4321");
+
+    printf("--Unir dos recorridos con una sola parada cada uno\n");
+    airTripAddLast(trip3_1,"T0",1.0,1.0);
+    airTripAddLast(trip4_1,"P0",4.0,4.0);
+    printf("---Recorridos input:\n");
+    airTripPrint(trip3_1);
+    airTripPrint(trip4_1);
+    airTripJoin(&tripJoin2, trip3_1, trip4_1);
+    printf("---Recorrido output:\n");
+    airTripPrint(tripJoin2);
+    airTripDelete(tripJoin2);
+    printf("\n");
+
+    struct airTrip* trip3_2 = airTripNew("R1234");
+    struct airTrip* trip4_2 = airTripNew("R4321");
+    airTripAddLast(trip3_2,"T0",1.0,1.0);
+    airTripAddLast(trip4_2,"P0",4.0,4.0);
+    struct airTrip* tripJoin3;
+    printf("--Unir dos recorridos con mas de dos paradas cada uno\n");
+    airTripAddLast(trip3_2,"T1",2.0,2.0);
+    airTripAddLast(trip3_2,"T2",3.0,3.0);
+    airTripAddLast(trip4_2,"P2",5.0,5.0);
+    airTripAddLast(trip4_2,"P3",6.0,6.0);
+    printf("---Recorridos input:\n");
+    airTripPrint(trip3_2);
+    airTripPrint(trip4_2);
+    airTripJoin(&tripJoin3, trip3_2, trip4_2);
+    printf("---Recorrido output:\n");
+    airTripPrint(tripJoin3);
+    airTripDelete(tripJoin3);
+    printf("\n");
+
+    struct airTrip* trip5 = airTripNew("R0");
+    struct airTrip* trip6 = airTripNew("R1");
+    struct airTrip* tripJoin4;
+    airTripAddLast(trip6,"P0",1.0,1.0);
+    printf("--Unir un recorrido vacio con otro de una sola parada\n");
+    printf("---Recorridos input:\n");
+    airTripPrint(trip5);
+    airTripPrint(trip6);
+    printf("\n");
+    airTripJoin(&tripJoin4, trip5, trip6);
+    printf("---Recorrido output:\n");
+    airTripPrint(tripJoin4);
+    airTripDelete(tripJoin4);
+    printf("\n");
 
     // airTripDelLast - Casos
     printf("👀 Acá comienzan los casos de airTripDelLast\n");
@@ -196,6 +212,7 @@ int main() {
     airTripPrint(CasoDel1);
     printf("✈️ CasoDel1 devuelve 0 paradas");
 
+    airTripDelete(CasoDel1);
 
     // airTripRemoveDuplicates - Casos
     printf("👀 Acá comienzan los casos de airTripRemoveDuplicates\n");
@@ -239,7 +256,11 @@ int main() {
     airTripRemoveDuplicates(CasoRemoveDuplicates3);
     printf("✈️ Se aplicó RemoveDuplicates y CasoRemoveDuplicates3 ahora tiene 5 paradas\n");
     airTripPrint(CasoRemoveDuplicates3);
-    
+
+    airTripDelete(CasoRemoveDuplicates1);
+    airTripDelete(CasoRemoveDuplicates2);
+    airTripDelete(CasoRemoveDuplicates3);
+
     // airTripGetTrip - Casos
     printf("👀 Acá comienzan los casos de airTripGetTrip\n");
     // Creo un nuevo trip para este caso de test
@@ -249,9 +270,10 @@ int main() {
     // Usar de parámetro un recorrido vacío
     printf("CasoGetTrip1 es un recorrido vacío\n");
     airTripPrint(CasoGetTrip1);
-    airTripGetTrip(CasoGetTrip1);
+    char* vacio = airTripGetTrip(CasoGetTrip1);
     printf("✈️ Se aplicó GetTrip y CasoGetTrip1:\n");
     airTripPrint(CasoGetTrip1);
+    free(vacio);
     
 
     //Usar de parámatro un recorrido de solo dos paradas
@@ -262,6 +284,7 @@ int main() {
     printf("%s\n", t);
     printf("✈️ Se aplicó GetTrip y CasoGetTrip2:\n");
     airTripPrint(CasoGetTrip2);
+    free(t);
     
 
     // Usar de parámetro un recorrido de una sola parada
@@ -271,6 +294,12 @@ int main() {
     printf("%s\n", t1);
     printf("✈️ Se aplicó GetTrip y CasoGetTrip1:\n");
     airTripPrint(CasoGetTrip1);
+    free(t1);
+
+
+    airTripDelete(CasoGetTrip1);
+    airTripDelete(CasoGetTrip2);
+    
 
     // Caso - airTripDelete
     // Creo un struct para este caso de test
@@ -282,10 +311,6 @@ int main() {
     // Borrar un recorrido vacío
     airTripDelete(CasoTripDelete);
     printf("✈️ Se aplicó Delete y CasoTripDelete se eliminó\n");
-    if (airTripGetTrip(CasoTripDelete)== NULL)
-    {
-        printf("true\n");
-    }
     
 
     // Borrar un recorrido de solo una parada
