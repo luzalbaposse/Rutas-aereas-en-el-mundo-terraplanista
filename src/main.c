@@ -44,6 +44,7 @@ int main() {
 
     // strConcatenate - Casos
     // Un string vacio y un string de 3 caracteres
+    printf("👀 Acá comienzan los casos de strCnt\n");
     char* str4 = strCnt("","abc");
     printf("strCnt(\"\",\"abc\") -> \"%s\"\n", str4);
     free(str4);
